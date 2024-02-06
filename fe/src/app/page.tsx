@@ -1,3 +1,10 @@
+"use client";
+
+import { useSession } from "next-auth/react";
+
 export default function Home() {
-  return <main>Hello Sanguis</main>;
+  const { data: session } = useSession();
+
+  console.log("1111", session);
+  return <main>{session ? "Hello" : "Please login"}</main>;
 }
