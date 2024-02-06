@@ -10,8 +10,6 @@ export const handleUserLogin = async ({ email, password }: LoginPayload) => {
       data: { email, password },
     });
 
-    console.log("response header: ", response.headers["x-sanguis-auth"]);
-
     return { user: response?.data, token: response?.headers["x-sanguis-auth"] };
   } catch (error) {
     console.log(error);

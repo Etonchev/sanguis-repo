@@ -8,17 +8,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
+import LoadingSkeleton from "../LoadingSkeleton/LoadingSkeleton";
 
 const NavBar = () => {
   const { data: session, status } = useSession();
 
-  console.log(session?.user);
   return (
     <main className="shadow-xl w-full h-16 flex justify-between items-center px-12">
-      <div className="text-2xl">SANGUIS</div>
+      <Link href={"/"} className="text-2xl">
+        SANGUIS
+      </Link>
       <div>
-        {status === "loading" && <Skeleton className="w-[100px] h-[20px] rounded-full" />}
+        {status === "loading" && <LoadingSkeleton />}
         {session && session.user && (
           <div className="flex gap-2">
             <Avatar>
