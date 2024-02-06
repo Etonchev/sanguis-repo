@@ -35,4 +35,7 @@ export const authOptions = {
       return session;
     },
   },
+  pages: {
+    signIn: "/login",
+  },
 } satisfies NextAuthOptions;
