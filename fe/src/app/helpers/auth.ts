@@ -1,20 +1,8 @@
 import axios from "axios";
 import { baseUrl } from "../utils/constants";
+import { LoginPayload, RegisterPayload } from "../utils/types";
 
-type Login = {
-  email: string;
-  password: string;
-};
-
-type Register = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  birthDate: string;
-};
-
-export const handleUserLogin = async ({ email, password }: Login) => {
+export const handleUserLogin = async ({ email, password }: LoginPayload) => {
   try {
     const response = await axios({
       method: "post",
@@ -22,9 +10,9 @@ export const handleUserLogin = async ({ email, password }: Login) => {
       data: { email, password },
     });
 
-    console.log("SSSS", response);
+    console.log("response header: ", response.headers["x-sanguis-auth"]);
 
-    return response?.data;
+    return { user: response?.data, token: response?.headers["x-sanguis-auth"] };
   } catch (error) {
     console.log(error);
   }
@@ -36,7 +24,7 @@ export const handleUserRegister = async ({
   firstName,
   lastName,
   birthDate,
-}: Register) => {
+}: RegisterPayload) => {
   try {
     const response = await axios({
       method: "post",

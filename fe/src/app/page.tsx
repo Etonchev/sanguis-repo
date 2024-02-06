@@ -1,10 +1,22 @@
 "use client";
 
+import NavBar from "@/components/NavBar/NavBar";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const { data: session } = useSession();
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
-  console.log("1111", session);
-  return <main>{session ? "Hello" : "Please login"}</main>;
+  console.log(session);
+
+  if (!session && status !== "loading") {
+    router.push("/login");
+  }
+
+  return (
+    <main>
+      <NavBar />
+    </main>
+  );
 }

@@ -14,16 +14,27 @@ export const authOptions = {
         if (!credentials) return;
         const { email, password } = credentials;
 
-        const user = await handleUserLogin({ email, password });
+        const response = await handleUserLogin({ email, password });
 
-        if (user) {
-          return user;
+        if (!response) return;
+
+        if (response.user) {
+          return { ...response.user, token: response.token };
         } else {
           return null;
         }
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token, user }) {
+      session.user = token as any;
+      return session;
+    },
+  },
   pages: {
     signIn: "/login",
   },

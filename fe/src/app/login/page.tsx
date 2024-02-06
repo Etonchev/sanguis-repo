@@ -37,7 +37,7 @@ export default function Login() {
       email: emailAddress,
       password,
       redirect: true,
-      callbackUrl: "/",
+      callbackUrl: "/" || "localhost:3000/",
     });
   };
 
