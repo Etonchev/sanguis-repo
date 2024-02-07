@@ -6,14 +6,17 @@ import LoadingSkeleton from "@/components/LoadingSkeleton/LoadingSkeleton";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  if (!session && status !== "loading") {
-    router.push("/login");
-  }
+  useEffect(() => {
+    if (!session && status !== "loading") {
+      router.push("/login");
+    }
+  }, [session]);
 
   return (
     <main className="flex flex-col gap-24 items-center">
@@ -27,7 +30,9 @@ export default function Home() {
               Your Lab Results
             </div>
           </div>
-          <Button onClick={() => router.push("/create-lab-result")} className="mt-52 mb-4">+ ADD NEW</Button>
+          <Button onClick={() => router.push("/create-lab-result")} className="mt-52 mb-4">
+            + ADD NEW
+          </Button>
           <LabResults />
         </div>
       )}
