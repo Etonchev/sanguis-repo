@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const formSchema = z.object({
   emailAddress: z.string().email(),
@@ -22,6 +24,8 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const [isLoginErorr, setIsLoginError] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,13 +36,19 @@ export default function Login() {
 
   const handleSubmit = async () => {
     const { emailAddress, password } = form.getValues();
+    setIsLoginError(false);
 
-    await signIn("credentials", {
+    const login = await signIn("user-login", {
       email: emailAddress,
       password,
-      redirect: true,
-      callbackUrl: "/" || "localhost:3000/",
+      redirect: false,
     });
+
+    if (login && login.ok) {
+      router.push("/");
+    } else {
+      setIsLoginError(true);
+    }
   };
 
   return (
@@ -79,6 +89,11 @@ export default function Login() {
               );
             }}
           />
+          {isLoginErorr && (
+            <div className="text-sm text-red-400">
+              Wrong username or password. Please try again.
+            </div>
+          )}
           <Button className="w-full">Login</Button>
           <div className="flex gap-2">
             <div className="text-sm">You don't have an account?</div>

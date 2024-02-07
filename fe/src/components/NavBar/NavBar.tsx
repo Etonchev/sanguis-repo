@@ -10,9 +10,11 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import LoadingSkeleton from "../LoadingSkeleton/LoadingSkeleton";
+import { useRouter } from "next/navigation";
 
 const NavBar = () => {
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   return (
     <main className="shadow-xl w-full h-16 flex justify-between items-center px-12">
@@ -33,7 +35,13 @@ const NavBar = () => {
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer" onClick={() => signOut()}>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => {
+                    router.push("/login");
+                    signOut({ redirect: false });
+                  }}
+                >
                   Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>

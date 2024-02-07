@@ -1,5 +1,3 @@
-import { number } from "zod";
-
 export type LoginPayload = {
   email: string;
   password: string;
@@ -32,4 +30,13 @@ export type LabResultsType = {
   limit: number;
   offset: number;
   total: number;
+};
+
+export type User = {
+  id: number;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
 };
