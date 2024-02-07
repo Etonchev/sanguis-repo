@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import NavBar from "@/components/NavBar/NavBar";
 import { emtpyFieldErrorMessage } from "../utils/constants";
 import { useSession } from "next-auth/react";
-import { BloodTestsCategory } from "../utils/types";
+import { BloodTestsCategory, LabTest } from "../utils/types";
 import { getBloodTestsTypes } from "../helpers/blood-tests";
 import {
   Form,
@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { addNewLabResult } from "../helpers/lab-results";
 
 export default function CreateLabResult() {
   const { data: session, status } = useSession();
@@ -37,6 +38,7 @@ export default function CreateLabResult() {
   const [bloodTestsNames, setBloodTestsNames] = useState<[string, ...string[]] | string[]>([""]);
   const [dynamicFields, setDynamicFields] = useState([{ testType: "", testValue: "" }]);
   const [isLoading, setIsLoading] = useState(false);
+  const [addNewLabResultError, setAddNewLabResultError] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -88,10 +90,48 @@ export default function CreateLabResult() {
     },
   });
 
-  const handleSubmit = async () => {
-    const { date, laboratory, physician, note, testPairs } = form.getValues();
+  const getTests = () => {
+    const { testPairs } = form.getValues();
+    const tests: LabTest[] = [];
 
-    console.log("ASDDASADSSD", date, laboratory, physician, note, testPairs);
+    for (const pair of testPairs) {
+      const category = bloodTestsTypes.find((test) => test.name === pair.testType);
+
+      if (category) {
+        tests.push({
+          categoryId: category.id,
+          value: Number(pair.testValue),
+        });
+      } else {
+        console.warn(`Category not found for testType: ${pair.testType}`);
+      }
+    }
+
+    return tests;
+  };
+
+  const handleSubmit = async () => {
+    if (!session) return;
+
+    const { date, laboratory, physician, note } = form.getValues();
+    const tests = getTests();
+    setAddNewLabResultError(false);
+
+    try {
+      const response = await addNewLabResult({
+        date,
+        laboratory,
+        physician,
+        note,
+        tests,
+        token: session.user.token,
+      });
+
+      router.push("/");
+    } catch (e) {
+      console.log(e);
+      setAddNewLabResultError(true);
+    }
   };
 
   return (
@@ -235,6 +275,9 @@ export default function CreateLabResult() {
                   );
                 }}
               />
+              {addNewLabResultError && (
+                <div className="text-sm text-red-600">Something went wrong, please try again.</div>
+              )}
               <Button className="w-full">Create</Button>
             </form>
           </Form>

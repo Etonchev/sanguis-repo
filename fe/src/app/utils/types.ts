@@ -51,3 +51,12 @@ export type BloodTestsCategory = {
   lowerRange: number;
   upperRange: number;
 };
+
+export type AddNewLabResultPayload = {
+  token: string;
+  date: string;
+  laboratory: string;
+  physician: string;
+  note: string;
+  tests: LabTest[]
+}
