@@ -22,25 +22,20 @@ const LabResults = () => {
   }, []);
 
   return (
-    <main className="flex flex-wrap gap-12 w-full h-fit mt-20">
-      {(status === "loading" || isLoading) &&
-        labResults.map((labResult: LabResultItem) => {
-          return (
-            <div
-              key={labResult.id}
-              className="flex flex-col gap-4 p-4 bg-white rounded-md drop-shadow-md w-1/5"
-            >
-              <Skeleton className="h-12 w-full" />
-              <Skeleton className="h-24 w-full" />
-              <Skeleton className="h-8 w-full" />
-            </div>
-          );
-        })}
-      {labResults.length > 0 &&
-        !isLoading &&
+    <main className="flex flex-wrap gap-8 w-full h-auto">
+      {isLoading && (
+        <div className="flex flex-col gap-4 p-4 bg-white rounded-md drop-shadow-md w-1/5">
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-8 w-full" />
+        </div>
+      )}
+      {labResults.length > 0 && (
         labResults.map((labResult: LabResultItem) => {
           return <LabResultCard key={labResult.id} labResult={labResult} />;
-        })}
+        })
+      )}
+      {labResults.length < 0 && !isLoading && <div className="text-2xl m-auto">You don't have lab results recorded.</div>}
     </main>
   );
 };

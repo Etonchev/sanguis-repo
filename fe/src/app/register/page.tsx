@@ -17,14 +17,17 @@ import Link from "next/link";
 import { handleUserRegister } from "../helpers/auth";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { emtpyFieldErrorMessage } from "../utils/constants";
 
-const formSchema = z.object({
-  emailAddress: z.string().email(),
-  password: z.string().min(3),
-  firstName: z.string(),
-  lastName: z.string(),
-  birthDate: z.string(),
-});
+const formSchema = z
+  .object({
+    emailAddress: z.string().email().min(1, { message: emtpyFieldErrorMessage }),
+    password: z.string().min(3).min(1, { message: emtpyFieldErrorMessage }),
+    firstName: z.string().min(1, { message: emtpyFieldErrorMessage }),
+    lastName: z.string().min(1, { message: emtpyFieldErrorMessage }),
+    birthDate: z.string().min(1, { message: emtpyFieldErrorMessage }),
+  })
+  .required();
 
 export default function Register() {
   const router = useRouter();
@@ -74,7 +77,7 @@ export default function Register() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Email address*</FormLabel>
+                  <FormLabel>Email address</FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="Email address" type="email" />
                   </FormControl>
@@ -89,7 +92,7 @@ export default function Register() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Password*</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="Password" type="password" />
                   </FormControl>
@@ -104,7 +107,7 @@ export default function Register() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>First Name*</FormLabel>
+                  <FormLabel>First Name</FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="First Name" type="text" />
                   </FormControl>
@@ -119,7 +122,7 @@ export default function Register() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Last Name*</FormLabel>
+                  <FormLabel>Last Name</FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="Last Name" type="text" />
                   </FormControl>
@@ -134,7 +137,7 @@ export default function Register() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Birth Date*</FormLabel>
+                  <FormLabel>Birth Date</FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="Birth Date" type="text" />
                   </FormControl>

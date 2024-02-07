@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar/NavBar";
 import LoadingSkeleton from "@/components/LoadingSkeleton/LoadingSkeleton";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function Home() {
               Your Lab Results
             </div>
           </div>
+          <Button onClick={() => router.push("/create-lab-result")} className="mt-52 mb-4">+ ADD NEW</Button>
           <LabResults />
         </div>
       )}

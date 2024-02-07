@@ -40,3 +40,14 @@ export type User = {
   lastName: string;
   birthDate: string;
 };
+
+export type BloodTestsCategory = {
+  id: string;
+  name: string;
+  aliases: string;
+  description: string;
+  speciality: string;
+  unit: string;
+  lowerRange: number;
+  upperRange: number;
+};
