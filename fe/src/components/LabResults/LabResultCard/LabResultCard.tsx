@@ -1,21 +1,38 @@
 import { useSession } from "next-auth/react";
 import { LabResultItem } from "../../../app/utils/types";
-import { ChevronRightIcon } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+
+  if (!session) {
+    return;
+  }
 
   return (
-    <main className="w-1/5 h-96">
-      {session && (
-        <div className="flex flex-col grow gap-2 p-4 bg-white rounded-md drop-shadow-md hover:drop-shadow-xl h-full cursor-pointer">
-          <div className="text-2xl self-center">{labResult.physician}</div>
-          <div className="text-xl self-center">{labResult.laboratory}</div>
-          <div className="text-sm self-center">{labResult.date}</div>
-          <div className="text-sm self-center mt-8">{labResult.note}</div>
-        </div>
-      )}
-    </main>
+    <Card className="w-1/5 h-auto cursor-pointer scale-100 hover:scale-105 ease-in duration-200">
+      <CardHeader>
+        <CardTitle>{labResult.physician}</CardTitle>
+        <CardDescription>{labResult.laboratory}</CardDescription>
+        <CardDescription>{labResult.date}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div>Notes:</div>
+        {labResult.note}
+      </CardContent>
+      <CardFooter className="flex gap-2 justify-end">
+        <Button variant="outline">Edit</Button>
+        <Button variant="destructive">Delete</Button>
+      </CardFooter>
+    </Card>
   );
 };
 
