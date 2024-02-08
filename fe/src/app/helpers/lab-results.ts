@@ -1,6 +1,11 @@
 import axios from "axios";
 import { baseUrl } from "../utils/constants";
-import { AddNewLabResultPayload, EditLabResultPayload, GetLabResultPayload, DeleteLabResultPayload } from "../utils/types";
+import {
+  AddNewLabResultPayload,
+  EditLabResultPayload,
+  GetLabResultPayload,
+  DeleteLabResultPayload,
+} from "../utils/types";
 
 export const fetchLabResults = async (userToken: string) => {
   try {

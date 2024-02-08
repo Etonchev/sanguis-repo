@@ -31,11 +31,26 @@ const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
     return;
   }
 
-  const handleDeleteLabResult = async () =>
+  const handleDeleteLabResult = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     await deleteLabResult({ id: labResult.id, token: session.user.token });
+  };
+
+  const handleRedirectToLabResultPage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    route.push(`/lab-result/${labResult.id}`);
+  };
+
+  const handleRedirectToEditLabResultPage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    route.push(`/edit-lab-result/${labResult.id}`);
+  };
 
   return (
-    <Card className="w-1/5 h-auto cursor-pointer scale-100 hover:scale-105 ease-in duration-200">
+    <Card
+      onClick={handleRedirectToLabResultPage}
+      className="w-1/5 h-auto cursor-pointer scale-100 hover:scale-105 ease-in duration-200"
+    >
       <CardHeader>
         <CardTitle>{labResult.physician}</CardTitle>
         <CardDescription>{labResult.laboratory}</CardDescription>
@@ -46,14 +61,16 @@ const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
         {labResult.note}
       </CardContent>
       <CardFooter className="flex gap-2 justify-end">
-        <Button onClick={() => route.push(`/edit-lab-result/${labResult.id}`)} variant="outline">
+        <Button onClick={handleRedirectToEditLabResultPage} variant="outline">
           Edit
         </Button>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="destructive">Delete</Button>
+            <Button onClick={(e) => e.stopPropagation()} variant="destructive">
+              Delete
+            </Button>
           </AlertDialogTrigger>
-          <AlertDialogContent>
+          <AlertDialogContent onClick={(e) => e.stopPropagation()}>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
               <AlertDialogDescription>
@@ -61,8 +78,10 @@ const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => handleDeleteLabResult()}>Delete</AlertDialogAction>
+              <AlertDialogCancel onClick={(e) => e.stopPropagation()}>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={(e) => handleDeleteLabResult(e)}>
+                Delete
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

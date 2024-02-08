@@ -39,7 +39,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
   const [bloodTestsTypes, setBloodTestsTypes] = useState<BloodTestsCategory[]>([]);
   const [bloodTestsNames, setBloodTestsNames] = useState<[string, ...string[]] | string[]>([""]);
   const [dynamicFields, setDynamicFields] = useState([{ testType: "", testValue: "" }]);
-  const [labResult, setLabResult] = useState<LabResultItem | undefined>(undefined);
+  const [labResult, setLabResult] = useState<LabResultItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLabResultLoading, setIsLabResultLoading] = useState(false);
   const [editLabResultError, setEditLabResultError] = useState(false);
@@ -77,7 +77,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
       const labResult = await fetchLabResult({ token: session.user.token, id });
       const testPairs = labResult.tests.map((test: LabTest) => {
         const currentTest = bloodTestsTypes.find((t) => {
-          return t.id === test.categoryId
+          return t.id === test.categoryId;
         });
         return { testType: currentTest && currentTest.name, testValue: test.value.toString() };
       });
@@ -93,7 +93,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
       setLabResult(labResult);
       setIsLabResultLoading(false);
     })();
-  }, [session, id, bloodTestsTypes])
+  }, [session, id, bloodTestsTypes]);
 
   const formSchema = z
     .object({
@@ -156,7 +156,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
         note,
         tests,
         token: session.user.token,
-        id
+        id,
       });
 
       router.push("/");

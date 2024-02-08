@@ -16,7 +16,7 @@ export default function Home() {
     if (!session && status !== "loading") {
       router.push("/login");
     }
-  }, [session]);
+  }, [session, status]);
 
   return (
     <main className="flex flex-col gap-24 items-center">
