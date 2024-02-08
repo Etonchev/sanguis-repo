@@ -134,7 +134,7 @@ const LabResult = ({ params }: { params: { id: string } }) => {
 
               return (
                 <div key={test.categoryId} className="w-full my-6">
-                  <Card className="w-full p-4 shadow-lg scale-100 hover:scale-105 ease-in duration-100">
+                  <Card className="w-full p-4 shadow-lg">
                     <CardContent className="flex">
                       <div className="w-1/2">
                         <div className="text-xl font-bold text-blue-950">

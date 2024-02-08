@@ -11,6 +11,7 @@ export const getBloodTestsTypes = async (
       url: `${baseUrl}/blood-tests/categories`,
       headers: {
         "X-Sanguis-Auth": userToken,
+        Accept: "application/vnd.sanguis.v1+json",
       },
     });
 
@@ -30,6 +31,7 @@ export const getLabResultBloodTests = async ({
       url: `${baseUrl}/blood-tests/${id}`,
       headers: {
         "X-Sanguis-Auth": token,
+        Accept: "application/vnd.sanguis.v1+json",
       },
     });
 

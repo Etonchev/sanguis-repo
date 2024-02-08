@@ -14,6 +14,7 @@ export const fetchLabResults = async (userToken: string) => {
       url: `${baseUrl}/lab-results`,
       headers: {
         "X-Sanguis-Auth": userToken,
+        Accept: "application/vnd.sanguis.v1+json",
       },
     });
 
@@ -30,6 +31,7 @@ export const fetchLabResult = async ({ token, id }: GetLabResultPayload) => {
       url: `${baseUrl}/lab-results/${id}`,
       headers: {
         "X-Sanguis-Auth": token,
+        Accept: "application/vnd.sanguis.v1+json",
       },
     });
 
@@ -53,6 +55,7 @@ export const addNewLabResult = async ({
       url: `${baseUrl}/lab-results`,
       headers: {
         "X-Sanguis-Auth": token,
+        Accept: "application/vnd.sanguis.v1+json",
       },
       data: {
         date,
@@ -84,6 +87,7 @@ export const editLabResult = async ({
       url: `${baseUrl}/lab-results/${id}`,
       headers: {
         "X-Sanguis-Auth": token,
+        Accept: "application/vnd.sanguis.v1+json",
       },
       data: {
         date,
@@ -107,6 +111,7 @@ export const deleteLabResult = async ({ id, token }: DeleteLabResultPayload) => 
       url: `${baseUrl}/lab-results/${id}`,
       headers: {
         "X-Sanguis-Auth": token,
+        Accept: "application/vnd.sanguis.v1+json",
       },
     });
 
