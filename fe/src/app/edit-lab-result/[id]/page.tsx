@@ -75,12 +75,17 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
       setIsLabResultLoading(true);
 
       const labResult = await fetchLabResult({ token: session.user.token, id });
-      const testPairs = labResult.tests.map((test: LabTest) => {
-        const currentTest = bloodTestsTypes.find((t) => {
-          return t.id === test.categoryId;
+      const testPairs =
+        labResult &&
+        labResult.tests.map((test: LabTest) => {
+          const currentTest = bloodTestsTypes.find((t) => {
+            return t.id === test.categoryId;
+          });
+
+          if (currentTest) {
+            return { testType: currentTest.name, testValue: test.value.toString() };
+          }
         });
-        return { testType: currentTest && currentTest.name, testValue: test.value.toString() };
-      });
 
       form.reset({
         date: labResult && labResult.date,

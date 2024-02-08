@@ -16,7 +16,10 @@ const LabResults = () => {
       setIsLoading(true);
       const labResults = await fetchLabResults(session.user.token);
 
-      setLabResults(labResults[0].items);
+      if (labResults.length > 0) {
+        setLabResults(labResults[0].items);
+      }
+
       setIsLoading(false);
     })();
   }, []);

@@ -71,3 +71,12 @@ export type GetLabResultPayload = {
 };
 
 export type DeleteLabResultPayload = GetLabResultPayload;
+
+export type GetLabResultBloodTests = GetLabResultPayload;
+
+export type LabResultBloodTests = {
+  categoryId: string;
+  note: string;
+  date: string;
+  value: number;
+};

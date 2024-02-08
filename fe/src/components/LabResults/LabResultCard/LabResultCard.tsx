@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
-  const route = useRouter();
+  const router = useRouter();
   const { data: session } = useSession();
 
   if (!session) {
@@ -38,18 +38,18 @@ const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
 
   const handleRedirectToLabResultPage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    route.push(`/lab-result/${labResult.id}`);
+    router.push(`/lab-result/${labResult.id}`);
   };
 
   const handleRedirectToEditLabResultPage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    route.push(`/edit-lab-result/${labResult.id}`);
+    router.push(`/edit-lab-result/${labResult.id}`);
   };
 
   return (
     <Card
       onClick={handleRedirectToLabResultPage}
-      className="w-1/5 h-auto cursor-pointer scale-100 hover:scale-105 ease-in duration-200"
+      className="w-1/5 h-auto cursor-pointer scale-100 hover:scale-105 ease-in duration-100 shadow-lg"
     >
       <CardHeader>
         <CardTitle>{labResult.physician}</CardTitle>
