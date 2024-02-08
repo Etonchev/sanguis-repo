@@ -133,7 +133,7 @@ const LabResult = ({ params }: { params: { id: string } }) => {
                 testCategories && testCategories.find((t) => t.id === test.categoryId);
 
               return (
-                <div className="w-full my-6">
+                <div key={test.categoryId} className="w-full my-6">
                   <Card className="w-full p-4 shadow-lg scale-100 hover:scale-105 ease-in duration-100">
                     <CardContent className="flex">
                       <div className="w-1/2">
