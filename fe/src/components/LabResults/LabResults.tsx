@@ -30,12 +30,13 @@ const LabResults = () => {
           <Skeleton className="h-8 w-full" />
         </div>
       )}
-      {labResults.length > 0 && (
+      {labResults.length > 0 &&
         labResults.map((labResult: LabResultItem) => {
           return <LabResultCard key={labResult.id} labResult={labResult} />;
-        })
+        })}
+      {labResults.length < 0 && !isLoading && (
+        <div className="text-2xl m-auto">You don't have lab results recorded.</div>
       )}
-      {labResults.length < 0 && !isLoading && <div className="text-2xl m-auto">You don't have lab results recorded.</div>}
     </main>
   );
 };

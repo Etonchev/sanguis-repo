@@ -52,11 +52,22 @@ export type BloodTestsCategory = {
   upperRange: number;
 };
 
-export type AddNewLabResultPayload = {
+export interface AddNewLabResultPayload {
   token: string;
   date: string;
   laboratory: string;
   physician: string;
   note: string;
-  tests: LabTest[]
+  tests: LabTest[];
 }
+
+export interface EditLabResultPayload extends AddNewLabResultPayload {
+  id: string;
+}
+
+export type GetLabResultPayload = {
+  token: string;
+  id: string;
+};
+
+export type DeleteLabResultPayload = GetLabResultPayload;

@@ -9,10 +9,10 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NavBar from "@/components/NavBar/NavBar";
-import { emtpyFieldErrorMessage } from "../utils/constants";
+import { emtpyFieldErrorMessage } from "../../utils/constants";
 import { useSession } from "next-auth/react";
-import { BloodTestsCategory, LabTest } from "../utils/types";
-import { getBloodTestsTypes } from "../helpers/blood-tests";
+import { BloodTestsCategory, LabResultItem, LabTest } from "../../utils/types";
+import { getBloodTestsTypes } from "../../helpers/blood-tests";
 import {
   Form,
   FormControl,
@@ -30,22 +30,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addNewLabResult } from "../helpers/lab-results";
+import { addNewLabResult, editLabResult, fetchLabResult } from "../../helpers/lab-results";
 
-export default function CreateLabResult() {
+export default function EditLabResult({ params }: { params: { id: string } }) {
   const { data: session, status } = useSession();
+  const { id } = params;
+  const router = useRouter();
   const [bloodTestsTypes, setBloodTestsTypes] = useState<BloodTestsCategory[]>([]);
   const [bloodTestsNames, setBloodTestsNames] = useState<[string, ...string[]] | string[]>([""]);
   const [dynamicFields, setDynamicFields] = useState([{ testType: "", testValue: "" }]);
+  const [labResult, setLabResult] = useState<LabResultItem | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [addNewLabResultError, setAddNewLabResultError] = useState(false);
-  const router = useRouter();
+  const [isLabResultLoading, setIsLabResultLoading] = useState(false);
+  const [editLabResultError, setEditLabResultError] = useState(false);
 
   useEffect(() => {
     if (!session && status !== "loading") {
       router.push("/login");
     }
+  }, [session, status, router]);
 
+  useEffect(() => {
     (async () => {
       if (!session) return;
       setIsLoading(true);
@@ -62,7 +67,33 @@ export default function CreateLabResult() {
       setBloodTestsNames(bloodTestsNames);
       setIsLoading(false);
     })();
-  }, [session]);
+  }, [session, id]);
+
+  useEffect(() => {
+    (async () => {
+      if (!session) return;
+      setIsLabResultLoading(true);
+
+      const labResult = await fetchLabResult({ token: session.user.token, id });
+      const testPairs = labResult.tests.map((test: LabTest) => {
+        const currentTest = bloodTestsTypes.find((t) => {
+          return t.id === test.categoryId
+        });
+        return { testType: currentTest && currentTest.name, testValue: test.value.toString() };
+      });
+
+      form.reset({
+        date: labResult && labResult.date,
+        laboratory: labResult && labResult.laboratory,
+        physician: labResult && labResult.physician,
+        note: labResult && labResult.note,
+        testPairs,
+      });
+
+      setLabResult(labResult);
+      setIsLabResultLoading(false);
+    })();
+  }, [session, id, bloodTestsTypes])
 
   const formSchema = z
     .object({
@@ -115,30 +146,32 @@ export default function CreateLabResult() {
 
     const { date, laboratory, physician, note } = form.getValues();
     const tests = getTests();
-    setAddNewLabResultError(false);
+    setEditLabResultError(false);
 
     try {
-      await addNewLabResult({
+      await editLabResult({
         date,
         laboratory,
         physician,
         note,
         tests,
         token: session.user.token,
+        id
       });
 
       router.push("/");
     } catch (e) {
       console.log(e);
-      setAddNewLabResultError(true);
+      setEditLabResultError(true);
     }
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center gap-16">
       <NavBar />
-      <div className="text-4xl mt-24">Create New Lab Result</div>
-      {isLoading ? (
+      <div className="text-4xl mt-24">Edit Lab Result</div>
+      {!isLabResultLoading && !labResult && <div>There is no lab result with this id.</div>}
+      {isLoading || isLabResultLoading ? (
         "Loading..."
       ) : (
         <div className="flex min-h-screen flex-col items-center gap-16">
@@ -275,10 +308,10 @@ export default function CreateLabResult() {
                   );
                 }}
               />
-              {addNewLabResultError && (
+              {editLabResultError && (
                 <div className="text-sm text-red-600">Something went wrong, please try again.</div>
               )}
-              <Button className="w-full">Create</Button>
+              <Button className="w-full">Edit</Button>
             </form>
           </Form>
         </div>
