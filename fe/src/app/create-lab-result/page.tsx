@@ -79,7 +79,9 @@ export default function CreateLabResult() {
       note: z.string().min(1, { message: emtpyFieldErrorMessage }),
       testPairs: z.array(
         z.object({
-          testType: z.enum(bloodTestsNames as [string, ...string[]]),
+          testType: z.string({
+            required_error: "This field is required.",
+          }),
           testValue: z.number({
             required_error: "This field is required.",
           }),
@@ -95,7 +97,7 @@ export default function CreateLabResult() {
       laboratory: "",
       physician: "",
       note: "",
-      testPairs: [{ testType: "", testValue: undefined }],
+      testPairs: [{ testType: undefined, testValue: undefined }],
     },
   });
 

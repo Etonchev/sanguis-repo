@@ -88,12 +88,12 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
           });
 
           if (currentTest) {
-            return { testType: currentTest.name, testValue: test.value.toString() };
+            return { testType: currentTest.name, testValue: test.value };
           }
         });
 
       form.reset({
-        date: labResult && labResult.date,
+        date: labResult && new Date(labResult.date),
         laboratory: labResult && labResult.laboratory,
         physician: labResult && labResult.physician,
         note: labResult && labResult.note,
@@ -115,7 +115,9 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
       note: z.string().min(1, { message: emtpyFieldErrorMessage }),
       testPairs: z.array(
         z.object({
-          testType: z.enum(bloodTestsNames as [string, ...string[]]),
+          testType: z.string({
+            required_error: "This field is required.",
+          }),
           testValue: z.number({
             required_error: "This field is required.",
           }),
@@ -131,7 +133,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
       laboratory: "",
       physician: "",
       note: "",
-      testPairs: [{ testType: "", testValue: undefined }],
+      testPairs: [{ testType: undefined, testValue: undefined }],
     },
   });
 
