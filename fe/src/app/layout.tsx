@@ -20,9 +20,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={cn(twMerge(inter.className))}>
         <Provider>
-          <main className="h-screen">
+          <main className="h-screen min-h-screen">
             <NavBar />
-            <div className="h-[calc(100%-128px)] pt-24">{children}</div>
+            <div className="h-[calc(100%-176px)] max-h-full pt-16 overflow-auto">{children}</div>
             <Footer />
             <Toaster />
           </main>

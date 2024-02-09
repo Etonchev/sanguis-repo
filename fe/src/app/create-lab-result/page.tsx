@@ -40,8 +40,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 export default function CreateLabResult() {
   const { data: session, status } = useSession();
   const [bloodTestsTypes, setBloodTestsTypes] = useState<BloodTestsCategory[]>([]);
-  const [bloodTestsNames, setBloodTestsNames] = useState<[string, ...string[]] | string[]>([""]);
   const [dynamicFields, setDynamicFields] = useState([{ testType: "", testValue: "" }]);
+  const [selectTestTypes, setSelectTestTypes] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [addNewLabResultError, setAddNewLabResultError] = useState(false);
   const router = useRouter();
@@ -64,7 +64,6 @@ export default function CreateLabResult() {
       }
 
       setBloodTestsTypes(bloodTestsTypes);
-      setBloodTestsNames(bloodTestsNames);
       setIsLoading(false);
     })();
   }, [session]);
@@ -75,15 +74,15 @@ export default function CreateLabResult() {
         required_error: "A date of birth is required.",
       }),
       laboratory: z.string().min(1, { message: emtpyFieldErrorMessage }),
-      physician: z.string().min(1, { message: emtpyFieldErrorMessage }),
-      note: z.string().min(1, { message: emtpyFieldErrorMessage }),
+      physician: z.string(),
+      note: z.string(),
       testPairs: z.array(
         z.object({
           testType: z.string({
-            required_error: "This field is required.",
+            required_error: "Please select a value, or remove the test.",
           }),
           testValue: z.number({
-            required_error: "This field is required.",
+            required_error: "Please select a value, or remove the test.",
           }),
         }),
       ),
@@ -262,7 +261,12 @@ export default function CreateLabResult() {
                       <FormItem>
                         <FormLabel>Blood Test Type</FormLabel>
                         <FormControl>
-                          <Select onValueChange={field.onChange}>
+                          <Select
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              setSelectTestTypes([...selectTestTypes, value]);
+                            }}
+                          >
                             <SelectTrigger className="w-52">
                               <SelectValue placeholder="Select Blood Test" />
                             </SelectTrigger>
@@ -270,7 +274,11 @@ export default function CreateLabResult() {
                               <SelectGroup>
                                 <SelectLabel>Select Blood Test Type</SelectLabel>
                                 {bloodTestsTypes.map((test) => (
-                                  <SelectItem key={test.id} value={test.name}>
+                                  <SelectItem
+                                    disabled={selectTestTypes.includes(test.name)}
+                                    key={test.id}
+                                    value={test.name}
+                                  >
                                     {test.name}
                                   </SelectItem>
                                 ))}

@@ -33,7 +33,7 @@ export default function Home() {
               Your Lab Results
             </div>
           </div>
-          <Button onClick={() => router.push("/create-lab-result")} className="mt-52 mb-4 bg-slate-800 text-slate-50">
+          <Button onClick={() => router.push("/create-lab-result")} className="mt-32 mb-4 bg-slate-800 text-slate-50">
             + ADD NEW
           </Button>
           <LabResults />
