@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import Loader from "@/components/Loader/Loader";
 
 const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
   const router = useRouter();

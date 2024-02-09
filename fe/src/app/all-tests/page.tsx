@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Loader from "@/components/Loader/Loader";
 
 const LabResult = ({ params }: { params: { id: string } }) => {
   const { data: session, status } = useSession();
@@ -89,11 +90,12 @@ const LabResult = ({ params }: { params: { id: string } }) => {
     router.push(`/edit-lab-result/${labResult.id}`);
   };
 
+  if (!session && status === "loading" || isLabResultLoading || areTestsCategoriesLoading || areLabResultBloodTestsLoading) {
+    return <Loader />
+  }
+
   return (
     <main className="flex flex-col items-center gap-16">
-      {isLabResultLoading ||
-        areTestsCategoriesLoading ||
-        (areLabResultBloodTestsLoading && <div>Loading...</div>)}
       <div className="text-4xl mt-24">Lab Result</div>
       {labResult && (
         <div className="w-2/3">
@@ -120,7 +122,7 @@ const LabResult = ({ params }: { params: { id: string } }) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDeleteLabResult}>Delete</AlertDialogAction>
+                  <AlertDialogAction className="bg-slate-800 text-slate-50" onClick={handleDeleteLabResult}>Delete</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>

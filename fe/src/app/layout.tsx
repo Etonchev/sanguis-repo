@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Provider>
           <main className="h-screen">
             <NavBar />
-            <div className="bg-blue-50 h-[calc(100%-128px)] pt-24">{children}</div>
+            <div className="h-[calc(100%-128px)] pt-24">{children}</div>
             <Footer />
             <Toaster />
           </main>

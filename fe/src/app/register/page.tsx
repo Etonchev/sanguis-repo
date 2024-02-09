@@ -146,7 +146,7 @@ export default function Register() {
               );
             }}
           />
-          <Button className="w-full">Register</Button>
+          <Button className="w-full bg-slate-800 text-slate-50">Register</Button>
           <div className="flex gap-2">
             <div className="text-sm">Already have an account?</div>
             <Link className="text-sm text-blue-500" href="/login">

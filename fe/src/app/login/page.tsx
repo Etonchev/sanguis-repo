@@ -102,7 +102,7 @@ export default function Login() {
               Wrong username or password. Please try again.
             </div>
           )}
-          <Button className="w-full">Login</Button>
+          <Button className="w-full bg-slate-800 text-slate-50">Login</Button>
           <div className="flex gap-2">
             <div className="text-sm">You don't have an account?</div>
             <Link className="text-sm text-blue-500" href="/register">

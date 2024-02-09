@@ -19,8 +19,8 @@ const NavBar = () => {
   const router = useRouter();
 
   return (
-    <main className="shadow-xl w-full h-16 flex justify-between items-center px-12">
-      <Link href={"/"} className="text-2xl">
+    <main className="bg-slate-800 shadow-xl w-full h-16 flex justify-between items-center px-12">
+      <Link href={"/"} className="text-2xl text-slate-50">
         SANGUIS
       </Link>
       <div>
@@ -33,7 +33,7 @@ const NavBar = () => {
                 .toUpperCase()}${session.user.lastName.charAt(0).toUpperCase()}`}</AvatarFallback>
             </Avatar>
             <DropdownMenu>
-              <DropdownMenuTrigger>{`${session.user.firstName} ${session.user.lastName}`}</DropdownMenuTrigger>
+              <DropdownMenuTrigger className="text-slate-50">{`${session.user.firstName} ${session.user.lastName}`}</DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />

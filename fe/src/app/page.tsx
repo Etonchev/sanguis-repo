@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import Loader from "@/components/Loader/Loader";
 
 export default function Home() {
   const router = useRouter();
@@ -16,6 +17,10 @@ export default function Home() {
       router.push("/login");
     }
   }, [session, status]);
+
+  if (!session && status === "loading") {
+    return <Loader />
+  }
 
   return (
     <main className="flex flex-col gap-24 items-center">
@@ -28,7 +33,7 @@ export default function Home() {
               Your Lab Results
             </div>
           </div>
-          <Button onClick={() => router.push("/create-lab-result")} className="mt-52 mb-4">
+          <Button onClick={() => router.push("/create-lab-result")} className="mt-52 mb-4 bg-slate-800 text-slate-50">
             + ADD NEW
           </Button>
           <LabResults />

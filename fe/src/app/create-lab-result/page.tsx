@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { addNewLabResult } from "../helpers/lab-results";
+import Loader from "@/components/Loader/Loader";
 
 export default function CreateLabResult() {
   const { data: session, status } = useSession();
@@ -133,154 +134,155 @@ export default function CreateLabResult() {
     }
   };
 
+  if ((!session && status === "loading") || isLoading) {
+    return <Loader />;
+  }
+
   return (
     <main className="flex flex-col items-center gap-16">
       <div className="text-4xl mt-24">Create New Lab Result</div>
-      {isLoading ? (
-        "Loading..."
-      ) : (
-        <div className="flex flex-col items-center gap-16">
-          <Form {...form}>
-            <form
-              className="max-w-md w-full flex flex-col gap-4"
-              onSubmit={form.handleSubmit(handleSubmit)}
-            >
-              <FormField
-                control={form.control}
-                name="physician"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Physician</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Physician" type="text" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
+      <div className="flex flex-col items-center gap-16">
+        <Form {...form}>
+          <form
+            className="max-w-md w-full flex flex-col gap-4"
+            onSubmit={form.handleSubmit(handleSubmit)}
+          >
+            <FormField
+              control={form.control}
+              name="physician"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Physician</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Physician" type="text" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="laboratory"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Laboratory</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Laboratory" type="text" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="date"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Date</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Date" type="text" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <div className="flex gap-2">
+              <Button
+                className="bg-slate-800 text-slate-50"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setDynamicFields([...dynamicFields, { testType: "", testValue: "" }]);
                 }}
-              />
-              <FormField
-                control={form.control}
-                name="laboratory"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Laboratory</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Laboratory" type="text" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
+              >
+                + Add Test
+              </Button>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setDynamicFields(dynamicFields.slice(0, dynamicFields.length - 1));
                 }}
-              />
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Date</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Date" type="text" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-              <div className="flex gap-2">
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setDynamicFields([...dynamicFields, { testType: "", testValue: "" }]);
+                disabled={dynamicFields.length === 1}
+                variant="destructive"
+              >
+                Remove Last Test
+              </Button>
+            </div>
+            {dynamicFields.map((field, index) => (
+              <div key={index} className="flex gap-6">
+                <FormField
+                  control={form.control}
+                  name={`testPairs[${index}].testType` as `testPairs.${number}.testType`}
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Blood Test Type</FormLabel>
+                        <FormControl>
+                          <Select onValueChange={field.onChange}>
+                            <SelectTrigger className="w-52">
+                              <SelectValue placeholder="Select Blood Test" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectLabel>Select Blood Test Type</SelectLabel>
+                                {bloodTestsTypes.map((test) => (
+                                  <SelectItem key={test.id} value={test.name}>
+                                    {test.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
                   }}
-                >
-                  + Add Test
-                </Button>
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setDynamicFields(dynamicFields.slice(0, dynamicFields.length - 1));
+                />
+                <FormField
+                  control={form.control}
+                  name={`testPairs[${index}].testValue` as `testPairs.${number}.testValue`}
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Test Value</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Test Value" type="text" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
                   }}
-                  disabled={dynamicFields.length === 1}
-                  variant="destructive"
-                >
-                  Remove Last Test
-                </Button>
+                />
               </div>
-              {dynamicFields.map((field, index) => (
-                <div key={index} className="flex gap-6">
-                  <FormField
-                    control={form.control}
-                    name={`testPairs[${index}].testType` as `testPairs.${number}.testType`}
-                    render={({ field }) => {
-                      return (
-                        <FormItem>
-                          <FormLabel>Blood Test Type</FormLabel>
-                          <FormControl>
-                            <Select onValueChange={field.onChange}>
-                              <SelectTrigger className="w-52">
-                                <SelectValue placeholder="Select Blood Test" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectGroup>
-                                  <SelectLabel>Select Blood Test Type</SelectLabel>
-                                  {bloodTestsTypes.map((test) => (
-                                    <SelectItem key={test.id} value={test.name}>
-                                      {test.name}
-                                    </SelectItem>
-                                  ))}
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      );
-                    }}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`testPairs[${index}].testValue` as `testPairs.${number}.testValue`}
-                    render={({ field }) => {
-                      return (
-                        <FormItem>
-                          <FormLabel>Test Value</FormLabel>
-                          <FormControl>
-                            <Input {...field} placeholder="Test Value" type="text" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      );
-                    }}
-                  />
-                </div>
-              ))}
-              <FormField
-                control={form.control}
-                name="note"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Note</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} placeholder="Note" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-              {addNewLabResultError && (
-                <div className="text-sm text-red-600">Something went wrong, please try again.</div>
-              )}
-              <Button className="w-full">Create</Button>
-            </form>
-          </Form>
-        </div>
-      )}
+            ))}
+            <FormField
+              control={form.control}
+              name="note"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Note</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Note" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            {addNewLabResultError && (
+              <div className="text-sm text-red-600">Something went wrong, please try again.</div>
+            )}
+            <Button className="w-full bg-slate-800 text-slate-50">Create</Button>
+          </form>
+        </Form>
+      </div>
     </main>
   );
 }
