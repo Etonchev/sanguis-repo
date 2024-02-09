@@ -21,13 +21,13 @@ export const handleUserRegister = async ({
   password,
   firstName,
   lastName,
-  birthDate,
+  userBirthDate,
 }: RegisterPayload) => {
   try {
     const response = await axios({
       method: "post",
       url: `${baseUrl}/users/register`,
-      data: { email, password, firstName, lastName, birthDate },
+      data: { email, password, firstName, lastName, userBirthDate },
     });
 
     return response?.data;

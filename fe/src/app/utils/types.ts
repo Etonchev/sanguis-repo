@@ -8,7 +8,7 @@ export type RegisterPayload = {
   password: string;
   firstName: string;
   lastName: string;
-  birthDate: string;
+  userBirthDate: string;
 };
 
 export type LabTest = {

@@ -12,12 +12,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { handleUserRegister } from "../helpers/auth";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { emtpyFieldErrorMessage } from "../utils/constants";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const formSchema = z
   .object({
@@ -25,7 +30,9 @@ const formSchema = z
     password: z.string().min(3).min(1, { message: emtpyFieldErrorMessage }),
     firstName: z.string().min(1, { message: emtpyFieldErrorMessage }),
     lastName: z.string().min(1, { message: emtpyFieldErrorMessage }),
-    birthDate: z.string().min(1, { message: emtpyFieldErrorMessage }),
+    birthDate: z.date({
+      required_error: "A date of birth is required.",
+    }),
   })
   .required();
 
@@ -35,23 +42,24 @@ export default function Register() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      emailAddress: "asdasd",
-      password: "asdasd",
-      firstName: "ada",
+      emailAddress: "",
+      password: "",
+      firstName: "",
       lastName: "",
-      birthDate: "a",
+      birthDate: undefined,
     },
   });
 
   const handleSubmit = async () => {
     const { emailAddress, password, firstName, lastName, birthDate } = form.getValues();
+    const userBirthDate = format(birthDate, "yyyy-MM-dd");
 
     const user = await handleUserRegister({
       email: emailAddress,
       password,
       firstName,
       lastName,
-      birthDate,
+      userBirthDate,
     });
 
     if (user) {
@@ -139,7 +147,34 @@ export default function Register() {
                 <FormItem>
                   <FormLabel>Birth Date</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Birth Date" type="text" />
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground",
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "yyyy-MM-dd")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
