@@ -80,7 +80,9 @@ export default function CreateLabResult() {
       testPairs: z.array(
         z.object({
           testType: z.enum(bloodTestsNames as [string, ...string[]]),
-          testValue: z.string().min(1, { message: emtpyFieldErrorMessage }),
+          testValue: z.number({
+            required_error: "This field is required.",
+          }),
         }),
       ),
     })
@@ -93,7 +95,7 @@ export default function CreateLabResult() {
       laboratory: "",
       physician: "",
       note: "",
-      testPairs: [{ testType: "", testValue: "" }],
+      testPairs: [{ testType: "", testValue: undefined }],
     },
   });
 
@@ -287,7 +289,16 @@ export default function CreateLabResult() {
                       <FormItem>
                         <FormLabel>Test Value</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Test Value" type="text" />
+                          <Input
+                            {...field}
+                            placeholder="Test Value"
+                            type="number"
+                            step="any"
+                            onChange={(e) => {
+                              const value = parseFloat(e.target.value);
+                              field.onChange(value);
+                            }}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
