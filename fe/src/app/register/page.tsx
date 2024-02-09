@@ -64,7 +64,7 @@ export default function Register() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center gap-16 p-24">
+    <main className="flex flex-col items-center gap-16 p-24">
       <div className="text-4xl">Register</div>
       <Form {...form}>
         <form

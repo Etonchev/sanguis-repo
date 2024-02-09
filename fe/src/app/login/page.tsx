@@ -2,6 +2,7 @@
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -16,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   emailAddress: z.string().email(),
@@ -24,8 +25,9 @@ const formSchema = z.object({
 });
 
 export default function Login() {
-  const [isLoginErorr, setIsLoginError] = useState(false);
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const [isLoginErorr, setIsLoginError] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,6 +35,12 @@ export default function Login() {
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (session) {
+      router.push("/");
+    }
+  }, [session, status]);
 
   const handleSubmit = async () => {
     const { emailAddress, password } = form.getValues();
@@ -52,7 +60,7 @@ export default function Login() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center gap-16 p-24">
+    <main className="flex flex-col items-center gap-16 p-24">
       <div className="text-4xl">Login</div>
       <Form {...form}>
         <form

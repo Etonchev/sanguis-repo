@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import NavBar from "@/components/NavBar/NavBar";
 import { emtpyFieldErrorMessage } from "../../utils/constants";
 import { useSession } from "next-auth/react";
 import { BloodTestsCategory, LabResultItem, LabTest } from "../../utils/types";
@@ -172,14 +171,13 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center gap-16">
-      <NavBar />
+    <main className="flex flex-col items-center gap-16">
       <div className="text-4xl mt-24">Edit Lab Result</div>
       {!isLabResultLoading && !labResult && <div>There is no lab result with this id.</div>}
       {isLoading || isLabResultLoading ? (
         "Loading..."
       ) : (
-        <div className="flex min-h-screen flex-col items-center gap-16">
+        <div className="flex flex-col items-center gap-16">
           <Form {...form}>
             <form
               className="max-w-md w-full flex flex-col gap-4"

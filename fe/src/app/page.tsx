@@ -1,7 +1,6 @@
 "use client";
 
 import LabResults from "@/components/LabResults/LabResults";
-import NavBar from "@/components/NavBar/NavBar";
 import LoadingSkeleton from "@/components/LoadingSkeleton/LoadingSkeleton";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -20,7 +19,6 @@ export default function Home() {
 
   return (
     <main className="flex flex-col gap-24 items-center">
-      <NavBar />
       {status === "loading" && <LoadingSkeleton />}
       {session && session.user && (
         <div className="w-2/3 h-auto">
