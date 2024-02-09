@@ -42,7 +42,6 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
   const { id } = params;
   const router = useRouter();
   const [bloodTestsTypes, setBloodTestsTypes] = useState<BloodTestsCategory[]>([]);
-  const [bloodTestsNames, setBloodTestsNames] = useState<[string, ...string[]] | string[]>([""]);
   const [dynamicFields, setDynamicFields] = useState([{ testType: "", testValue: "" }]);
   const [labResult, setLabResult] = useState<LabResultItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +68,6 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
       }
 
       setBloodTestsTypes(bloodTestsTypes);
-      setBloodTestsNames(bloodTestsNames);
       setIsLoading(false);
     })();
   }, [session, id]);
@@ -91,6 +89,8 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
             return { testType: currentTest.name, testValue: test.value };
           }
         });
+
+      console.log("EEEEEEEEEE", testPairs);
 
       form.reset({
         date: labResult && new Date(labResult.date),
@@ -302,7 +302,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
                         <FormControl>
                           <Select onValueChange={field.onChange}>
                             <SelectTrigger className="w-52">
-                              <SelectValue placeholder="Select Blood Test" />
+                              <SelectValue placeholder={field.value || "Select Blood Test"} />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectGroup>
