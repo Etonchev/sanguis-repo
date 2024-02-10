@@ -17,9 +17,25 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/Loader/Loader";
+
+interface LabResultTestInfo {
+  lowerRange: number;
+  upperRange: number;
+  unit: string;
+  value: number;
+  name: string;
+}
 
 const LabResult = ({ params }: { params: { id: string } }) => {
   const { data: session, status } = useSession();
@@ -32,6 +48,7 @@ const LabResult = ({ params }: { params: { id: string } }) => {
     [],
   );
   const [areLabResultBloodTestsLoading, setAreLabResultBloodTestsLoading] = useState(false);
+  const [labResultTestsInfo, setLabResultTestsInfo] = useState<LabResultTestInfo[]>([]);
   const { id } = params;
 
   useEffect(() => {
@@ -76,6 +93,42 @@ const LabResult = ({ params }: { params: { id: string } }) => {
     })();
   }, [session, id]);
 
+  useEffect(() => {
+    if (!session) return;
+
+    if (
+      !labResultBloodTests ||
+      !testCategories ||
+      !labResultBloodTests.length ||
+      !testCategories.length
+    )
+      return;
+
+    const labResultTestsInfo: any = labResultBloodTests
+      .map((blootTest) => {
+        const matchingItem = testCategories.find(
+          (category) => blootTest.categoryId === category.id,
+        );
+
+        if (matchingItem) {
+          return {
+            lowerRange: matchingItem.lowerRange,
+            upperRange: matchingItem.upperRange,
+            value: blootTest.value,
+            name: matchingItem.name,
+            unit: matchingItem.unit,
+          };
+        }
+
+        return [];
+      })
+      .filter(Boolean);
+
+    if (labResultTestsInfo && labResultTestsInfo.length) {
+      setLabResultTestsInfo(labResultTestsInfo);
+    }
+  }, [session, labResultBloodTests, testCategories]);
+
   const handleDeleteLabResult = async () => {
     if (!labResult || !session) return;
 
@@ -90,8 +143,13 @@ const LabResult = ({ params }: { params: { id: string } }) => {
     router.push(`/edit-lab-result/${labResult.id}`);
   };
 
-  if (!session && status === "loading" || isLabResultLoading || areTestsCategoriesLoading || areLabResultBloodTestsLoading) {
-    return <Loader />
+  if (
+    (!session && status === "loading") ||
+    isLabResultLoading ||
+    areTestsCategoriesLoading ||
+    areLabResultBloodTestsLoading
+  ) {
+    return <Loader />;
   }
 
   return (
@@ -127,39 +185,28 @@ const LabResult = ({ params }: { params: { id: string } }) => {
               </AlertDialogContent>
             </AlertDialog>
           </div>
-          {labResultBloodTests &&
-            labResultBloodTests.map((test) => {
-              const testType =
-                testCategories && testCategories.find((t) => t.id === test.categoryId);
-
-              return (
-                <div key={test.categoryId} className="w-full my-6">
-                  <Card className="w-full p-4 shadow-lg">
-                    <CardContent className="flex">
-                      <div className="w-1/2">
-                        <div className="text-xl font-bold text-blue-950">
-                          {testType?.name || ""}
-                        </div>
-                        <div className="text-lg font-normal text-gray-500">
-                          {testType?.description || ""}
-                        </div>
-                        <div className="w-full h-72 border border-red-500 mt-8"></div>
-                      </div>
-                      <div className="flex flex-col w-1/2">
-                        <div className="self-end text-xl font-bold text-blue-950">
-                          Your result:
-                          <span className="text-green-600 font-semibold">{` ${test.value} ${
-                            testType?.unit || ""
-                          }`}</span>
-                        </div>
-                        <div className="text-lg text-gray-500 mt-20 self-center">{`Date: ${test.date}`}</div>
-                        <div className="text-lg text-gray-500 self-center">{`Notes: ${test.note}`}</div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              );
-            })}
+          <Table className="mt-6">
+            <TableCaption>A list of your lab result tests.</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Test Type</TableHead>
+                <TableHead className="w-24">Unit</TableHead>
+                <TableHead>Your value</TableHead>
+                <TableHead>Reference values</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {labResultTestsInfo &&
+                labResultTestsInfo.map((test) => (
+                  <TableRow>
+                    <TableCell className="font-medium">{test.name}</TableCell>
+                    <TableCell>{test.unit}</TableCell>
+                    <TableCell>{test.value}</TableCell>
+                    <TableCell>{`${test.lowerRange} - ${test.upperRange}`}</TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
         </div>
       )}
     </main>
