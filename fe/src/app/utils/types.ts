@@ -80,3 +80,17 @@ export type LabResultBloodTests = {
   date: string;
   value: number;
 };
+
+type BloodTestItem = {
+  categoryId: string;
+  note: string;
+  date: string;
+  value: number;
+};
+
+export type AllBloodTests = {
+  items: BloodTestItem[];
+  total: number;
+  offset: number;
+  limit: number;
+};
