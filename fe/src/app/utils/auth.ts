@@ -2,7 +2,6 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { handleUserLogin } from "../helpers/auth";
 import { mockUsers } from "./mocks";
-import { User } from "./types";
 
 export const authOptions = {
   providers: [
@@ -16,16 +15,21 @@ export const authOptions = {
       async authorize(credentials, req) {
         if (!credentials) return null;
 
-        const { email, password } = credentials;
+        const { email, password } = credentials as {
+          email: string;
+          password: string;
+        };
 
         const response = await handleUserLogin({ email, password });
 
         // TODO: Delete this mock when there is a real data and return the response.user instead of the authenticatedUser
-        const authenticatedUser = mockUsers.find(user => user.email === email && user.password === password);
+        const authenticatedUser = mockUsers.find(
+          (user) => user.email === email && user.password === password,
+        );
 
         if (response && response.user && authenticatedUser) {
           // return { ...response.user, token: response.token };
-          return { ...authenticatedUser, token: response.token };
+          return { ...authenticatedUser, id: String(authenticatedUser.id), token: response.token };
         } else {
           return null;
         }
@@ -41,6 +45,12 @@ export const authOptions = {
       return session;
     },
   },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60,
+  },
+  secret: "sanguis",
   pages: {
     signIn: "/login",
   },
