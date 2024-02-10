@@ -10,8 +10,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import Loader from "@/components/Loader/Loader";
 import _ from "lodash";
 import TestValuesLegend from "@/components/TestValuesLegend/TestValuesLegend";
+import LineChart from "@/components/LineChart/LineChart";
 
-type Data = {
+export type Data = {
   [date: string]: number;
 };
 interface TestCardInfo {
@@ -116,14 +117,16 @@ const LabResult = ({ params }: { params: { id: string } }) => {
   return (
     <main className="flex flex-col items-center gap-16">
       <div className="text-4xl mt-24">My Tests</div>
-      <div className="w-2/3">
+      <div className="w-[80%]">
         <div key={testCardInfo.name} className="w-full my-6">
-          <Card className="w-full p-4 shadow-lg">
+          <Card className="w-full p-4 border border-green-400 shadow-lg h-auto">
             <CardContent className="flex">
               <div className="w-1/2">
                 <div className="text-xl font-bold text-blue-950">{testCardInfo.name}</div>
                 <div className="text-lg font-normal text-gray-500">{testCardInfo.description}</div>
-                <div className="w-full h-72 border border-red-500 mt-8"></div>
+                <div className="w-full h-auto mt-8">
+                  <LineChart data={testCardInfo.data}/>
+                </div>
               </div>
               <div className="flex flex-col w-1/2">
                 <div className="self-end text-xl font-bold text-blue-950">
