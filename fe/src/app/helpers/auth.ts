@@ -13,6 +13,7 @@ export const handleUserLogin = async ({ email, password }: LoginPayload) => {
     return { user: response?.data, token: response?.headers["x-sanguis-auth"] };
   } catch (error) {
     console.log(error);
+    throw new Error();
   }
 };
 
@@ -33,5 +34,6 @@ export const handleUserRegister = async ({
     return response?.data;
   } catch (error) {
     console.log(error);
+    throw new Error();
   }
 };

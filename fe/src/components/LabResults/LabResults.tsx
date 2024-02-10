@@ -16,13 +16,13 @@ const LabResults = () => {
       setIsLoading(true);
       const labResults = await fetchLabResults(session.user.token);
 
-      if (labResults.length > 0) {
+      if (labResults && labResults.length > 0) {
         setLabResults(labResults[0].items);
       }
 
       setIsLoading(false);
     })();
-  }, []);
+  }, [session]);
 
   return (
     <main className="flex flex-wrap gap-8 w-full h-auto">
@@ -37,9 +37,10 @@ const LabResults = () => {
         labResults.map((labResult: LabResultItem) => {
           return <LabResultCard key={labResult.id} labResult={labResult} />;
         })}
-      {labResults.length < 0 && !isLoading && (
-        <div className="text-2xl m-auto">You don't have lab results recorded.</div>
-      )}
+      {!labResults ||
+        (labResults.length < 0 && !isLoading && (
+          <div className="text-2xl m-auto">You don't have lab results recorded.</div>
+        ))}
     </main>
   );
 };

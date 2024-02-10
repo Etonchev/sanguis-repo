@@ -80,7 +80,7 @@ const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel onClick={(e) => e.stopPropagation()}>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={(e) => handleDeleteLabResult(e)}>
+              <AlertDialogAction className="bg-red-600" onClick={(e) => handleDeleteLabResult(e)}>
                 Delete
               </AlertDialogAction>
             </AlertDialogFooter>

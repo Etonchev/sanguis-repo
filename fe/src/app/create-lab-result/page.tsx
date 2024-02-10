@@ -352,7 +352,7 @@ export default function CreateLabResult() {
             {bloodTestsTypes &&
               bloodTestsTypes.length &&
               bloodTestsTypes.map((testType) => (
-                <AccordionItem value="item-1">
+                <AccordionItem key={testType.id} value="item-1">
                   <AccordionTrigger>{testType.name}</AccordionTrigger>
                   <AccordionContent>{testType.description}</AccordionContent>
                   <AccordionContent>{testType.aliases}</AccordionContent>

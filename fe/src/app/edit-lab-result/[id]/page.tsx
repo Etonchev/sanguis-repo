@@ -110,7 +110,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
         testPairs,
       });
 
-      const testTypes = testPairs.map((test: TestResult) => test.testType);
+      const testTypes = testPairs.map((test: TestResult) => test && test.testType);
 
       setSelectTestTypes([...selectTestTypes, ...testTypes]);
       setLabResult(labResult);
@@ -321,7 +321,9 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
                               }}
                             >
                               <SelectTrigger className="w-52">
-                                <SelectValue placeholder={field.value || "Select Blood Test"} />
+                                <SelectValue
+                                  placeholder={(field && field.value) ?? "Select Blood Test"}
+                                />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectGroup>
@@ -398,7 +400,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
             {bloodTestsTypes &&
               bloodTestsTypes.length &&
               bloodTestsTypes.map((testType) => (
-                <AccordionItem value="item-1">
+                <AccordionItem key={testType.id} value="item-1">
                   <AccordionTrigger>{testType.name}</AccordionTrigger>
                   <AccordionContent>{testType.description}</AccordionContent>
                   <AccordionContent>{testType.aliases}</AccordionContent>

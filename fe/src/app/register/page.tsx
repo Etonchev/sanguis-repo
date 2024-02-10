@@ -3,6 +3,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
 import {
   Form,
   FormControl,
@@ -23,6 +24,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useEffect } from "react";
 
 const formSchema = z
   .object({
@@ -38,6 +40,7 @@ const formSchema = z
 
 export default function Register() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,6 +52,12 @@ export default function Register() {
       birthDate: undefined,
     },
   });
+
+  useEffect(() => {
+    if (session) {
+      router.push("/");
+    }
+  }, [session, status]);
 
   const handleSubmit = async () => {
     const { emailAddress, password, firstName, lastName, birthDate } = form.getValues();

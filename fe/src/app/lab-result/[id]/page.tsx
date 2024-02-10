@@ -180,7 +180,9 @@ const LabResult = ({ params }: { params: { id: string } }) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDeleteLabResult}>Delete</AlertDialogAction>
+                  <AlertDialogAction className="bg-red-600" onClick={handleDeleteLabResult}>
+                    Delete
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -198,7 +200,7 @@ const LabResult = ({ params }: { params: { id: string } }) => {
             <TableBody>
               {labResultTestsInfo &&
                 labResultTestsInfo.map((test) => (
-                  <TableRow>
+                  <TableRow key={test.name}>
                     <TableCell className="font-medium">{test.name}</TableCell>
                     <TableCell>{test.unit}</TableCell>
                     <TableCell>{test.value}</TableCell>

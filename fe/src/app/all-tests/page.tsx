@@ -125,7 +125,7 @@ const LabResult = ({ params }: { params: { id: string } }) => {
                 <div className="text-xl font-bold text-blue-950">{testCardInfo.name}</div>
                 <div className="text-lg font-normal text-gray-500">{testCardInfo.description}</div>
                 <div className="w-full h-auto mt-8">
-                  <LineChart data={testCardInfo.data}/>
+                  <LineChart data={testCardInfo.data} />
                 </div>
               </div>
               <div className="flex flex-col w-1/2">

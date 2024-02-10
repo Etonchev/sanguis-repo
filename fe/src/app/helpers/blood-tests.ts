@@ -1,6 +1,11 @@
 import axios from "axios";
 import { baseUrl } from "../utils/constants";
-import { AllBloodTests, BloodTestsCategory, GetLabResultBloodTests, LabResultBloodTests } from "../utils/types";
+import {
+  AllBloodTests,
+  BloodTestsCategory,
+  GetLabResultBloodTests,
+  LabResultBloodTests,
+} from "../utils/types";
 
 export const getBloodTestsTypes = async (
   userToken: string,
@@ -18,6 +23,7 @@ export const getBloodTestsTypes = async (
     return response?.data;
   } catch (error) {
     console.log(error);
+    throw new Error();
   }
 };
 
@@ -38,12 +44,11 @@ export const getLabResultBloodTests = async ({
     return response?.data;
   } catch (error) {
     console.log(error);
+    throw new Error();
   }
 };
 
-export const getAllBloodTests = async (
-  token: string,
-): Promise<AllBloodTests[] | undefined> => {
+export const getAllBloodTests = async (token: string): Promise<AllBloodTests[] | undefined> => {
   try {
     const response = await axios({
       method: "get",
@@ -57,5 +62,6 @@ export const getAllBloodTests = async (
     return response?.data;
   } catch (error) {
     console.log(error);
+    throw new Error();
   }
 };

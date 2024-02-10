@@ -21,6 +21,7 @@ export const fetchLabResults = async (userToken: string) => {
     return response?.data;
   } catch (error) {
     console.log(error);
+    throw new Error();
   }
 };
 
@@ -38,6 +39,7 @@ export const fetchLabResult = async ({ token, id }: GetLabResultPayload) => {
     return response?.data;
   } catch (error) {
     console.log(error);
+    throw new Error();
   }
 };
 
@@ -69,6 +71,7 @@ export const addNewLabResult = async ({
     return response?.data;
   } catch (error) {
     console.log(error);
+    throw new Error();
   }
 };
 
@@ -101,6 +104,7 @@ export const editLabResult = async ({
     return response?.data;
   } catch (error) {
     console.log(error);
+    throw new Error();
   }
 };
 
@@ -118,5 +122,6 @@ export const deleteLabResult = async ({ id, token }: DeleteLabResultPayload) => 
     return response?.data;
   } catch (error) {
     console.log(error);
+    throw new Error();
   }
 };
