@@ -105,8 +105,8 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
       form.reset({
         date: labResult && new Date(labResult.date),
         laboratory: labResult && labResult.laboratory,
-        physician: labResult && labResult.physician,
-        note: labResult && labResult.note,
+        physician: labResult && labResult.physician || "",
+        note: labResult && labResult.note || "",
         testPairs,
       });
 
@@ -213,36 +213,6 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
             >
               <FormField
                 control={form.control}
-                name="physician"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Physician</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Physician" type="text" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="laboratory"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Laboratory</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Laboratory" type="text" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
                 name="date"
                 render={({ field }) => {
                   return (
@@ -277,6 +247,36 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
                             />
                           </PopoverContent>
                         </Popover>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="laboratory"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Laboratory</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Laboratory" type="text" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="physician"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Physician</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Physician" type="text" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

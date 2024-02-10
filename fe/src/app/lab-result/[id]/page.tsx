@@ -158,10 +158,12 @@ const LabResult = ({ params }: { params: { id: string } }) => {
       {labResult && (
         <div className="w-2/3">
           <div className="flex flex-col gap-2 items-center">
-            <div className="text-2xl">{labResult.physician}</div>
+            <div className="text-2xl">{labResult.date}</div>
             <div className="text-xl text-gray-400">{labResult.laboratory}</div>
-            <div className="text-sm text-gray-400">{labResult.date}</div>
-            <div className="text-sm">{`Notes: ${labResult.note}`}</div>
+            <div className="text-sm text-gray-400">{labResult.physician || ""}</div>
+            <div className="text-sm">{`Notes: ${
+              labResult.note ? labResult.note : "No notes for this lab result."
+            }`}</div>
           </div>
           <div className="flex justify-end gap-2 mt-24">
             <Button onClick={handleRedirectToEditLabResultPage} variant="outline">

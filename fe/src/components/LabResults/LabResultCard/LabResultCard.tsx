@@ -53,9 +53,9 @@ const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
       className="w-1/5 h-auto cursor-pointer scale-100 hover:scale-105 ease-in duration-100 shadow-lg"
     >
       <CardHeader>
-        <CardTitle>{labResult.physician}</CardTitle>
-        <CardDescription>{labResult.laboratory}</CardDescription>
-        <CardDescription>{labResult.date}</CardDescription>
+        <CardTitle>{labResult.date}</CardTitle>
+        <CardDescription className="font-semibold">{labResult.laboratory}</CardDescription>
+        <CardDescription>{labResult.physician || ""}</CardDescription>
       </CardHeader>
       <CardContent>
         <div>Notes:</div>

@@ -123,8 +123,7 @@ const LabResult = ({ params }: { params: { id: string } }) => {
             <CardContent className="flex">
               <div className="w-1/2">
                 <div className="text-xl font-bold text-blue-950">{testCardInfo.name}</div>
-                <div className="text-lg font-normal text-gray-500">{testCardInfo.description}</div>
-                <div className="w-full h-auto mt-8">
+                <div className="w-full h-auto">
                   <LineChart data={testCardInfo.data} />
                 </div>
               </div>
@@ -139,6 +138,12 @@ const LabResult = ({ params }: { params: { id: string } }) => {
                   lowerRange={testCardInfo.lowerRange}
                   upperRange={testCardInfo.upperRange}
                 />
+                <div className="ml-4 mt-12">
+                  <div className="text-lg font-semibold">About this Test</div>
+                  <div className="text-lg font-normal text-gray-500">
+                    {testCardInfo.description}
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

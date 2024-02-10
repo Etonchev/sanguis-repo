@@ -167,36 +167,6 @@ export default function CreateLabResult() {
             >
               <FormField
                 control={form.control}
-                name="physician"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Physician</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Physician" type="text" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="laboratory"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Laboratory</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Laboratory" type="text" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
                 name="date"
                 render={({ field }) => {
                   return (
@@ -231,6 +201,36 @@ export default function CreateLabResult() {
                             />
                           </PopoverContent>
                         </Popover>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="laboratory"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Laboratory</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Laboratory" type="text" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="physician"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Physician</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Physician" type="text" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
