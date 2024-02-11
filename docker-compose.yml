@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:16.1-alpine
+    container_name: "postgres-database"
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=sanguisdb
+      - POSTGRES_USER=sadmin
+      - POSTGRES_PASSWORD=password
+
+  sanguis-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: "sanguis-api-image"
+    container_name: "sanguis-api"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    environment:
+      - SPRING.PROFILES.ACTIVE=default
+
+  sanguis-ui:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: "sanguis-ui-image"
+    container_name: "sanguis-ui"
+    ports:
+      - "3000:3000"
