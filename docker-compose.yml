@@ -2,16 +2,17 @@ version: '3.8'
 
 services:
   database:
-    image: postgres:16.1-alpine
-    container_name: "postgres-database"
+    image: mysql:8.0.33
+    restart: always
+    container_name: "mysql-database"
     ports:
-      - 5432:5432
+      - "13306:3306"
     volumes:
-      - ~/apps/postgres:/var/lib/postgresql/data
+      - ~/apps/mysql:/var/lib/mysql
     environment:
-      - POSTGRES_DB=sanguisdb
-      - POSTGRES_USER=sadmin
-      - POSTGRES_PASSWORD=password
+      - MYSQL_DATABASE=sanguisdb
+      - MYSQL_USER=sadmin
+      - MYSQL_PASSWORD=password
 
   sanguis-api:
     build:

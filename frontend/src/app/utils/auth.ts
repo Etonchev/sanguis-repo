@@ -1,7 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { handleUserLogin } from "../helpers/auth";
-import { mockUsers } from "./mocks";
 
 export const authOptions = {
   providers: [
@@ -22,14 +21,8 @@ export const authOptions = {
 
         const response = await handleUserLogin({ email, password });
 
-        // TODO: Delete this mock when there is a real data and return the response.user instead of the authenticatedUser
-        const authenticatedUser = mockUsers.find(
-          (user) => user.email === email && user.password === password,
-        );
-
-        if (response && response.user && authenticatedUser) {
-          // return { ...response.user, token: response.token };
-          return { ...authenticatedUser, id: String(authenticatedUser.id), token: response.token };
+        if (response && response.user) {
+          return { ...response.user, token: response.token };
         } else {
           return null;
         }
