@@ -1,37 +1,33 @@
 version: '3.8'
 
 services:
-  database:
+  sanguis-database:
     image: mysql:8.0.33
-    restart: always
-    container_name: "mysql-database"
+    container_name: sanguis-database
     ports:
-      - "13306:3306"
-    volumes:
-      - ~/apps/mysql:/var/lib/mysql
+      - "3306:3306"
     environment:
       - MYSQL_DATABASE=sanguisdb
-      - MYSQL_USER=sadmin
-      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=root
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping" ]
+      interval: 5s
+      timeout: 60s
+      retries: 3
 
   sanguis-api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    image: "sanguis-api-image"
-    container_name: "sanguis-api"
+    build: ./backend
+    container_name: sanguis-api
     ports:
       - "8080:8080"
     depends_on:
-      - database
-    environment:
-      - SPRING.PROFILES.ACTIVE=default
+      sanguis-database:
+        condition: service_healthy
 
   sanguis-ui:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    image: "sanguis-ui-image"
+    build: ./frontend
     container_name: "sanguis-ui"
     ports:
       - "3000:3000"
+    depends_on:
+      - sanguis-api
