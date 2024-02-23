@@ -10,6 +10,14 @@ public class UserRegistrationRequest {
     private String lastName;
     private Date birthDate;
 
+    public UserRegistrationRequest(String email, String password, String firstName, String lastName, Date birthDate) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+    }
+
     public String getEmail() {
         return email;
     }
