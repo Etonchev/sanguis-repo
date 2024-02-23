@@ -68,7 +68,7 @@ export default function Register() {
       password,
       firstName,
       lastName,
-      userBirthDate,
+      birthDate: userBirthDate,
     });
 
     if (user) {
