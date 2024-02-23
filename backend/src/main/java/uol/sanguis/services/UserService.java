@@ -4,7 +4,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uol.sanguis.entities.User;
+import uol.sanguis.entities.UserEntity;
 import uol.sanguis.models.requests.UserLoginRequest;
 import uol.sanguis.models.requests.UserRegistrationRequest;
 import uol.sanguis.repositories.UserRepository;
@@ -23,8 +23,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User register(UserRegistrationRequest input) {
-        var user = new User()
+    public UserEntity register(UserRegistrationRequest input) {
+        var user = new UserEntity()
                 .withEmail(input.getEmail())
                 .withFirstName(input.getFirstName())
                 .withLastName(input.getLastName())
@@ -34,7 +34,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User login(UserLoginRequest input) {
+    public UserEntity login(UserLoginRequest input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword()));
 

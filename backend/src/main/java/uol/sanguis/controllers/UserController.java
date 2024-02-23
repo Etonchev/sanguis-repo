@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uol.sanguis.entities.User;
+import uol.sanguis.entities.UserEntity;
 import uol.sanguis.models.requests.UserLoginRequest;
 import uol.sanguis.models.requests.UserRegistrationRequest;
 import uol.sanguis.models.responses.UserDetailsResponse;
@@ -32,10 +32,10 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDetailsResponse> register(@RequestBody UserRegistrationRequest userRegistrationRequest) {
-        User user = userService.register(userRegistrationRequest);
-        UserDetailsResponse userDetailsResponse = new UserDetailsResponse(user.getEmail(),
-                user.getFirstName(), user.getLastName(),
-                user.getBirthDate());
+        UserEntity userEntity = userService.register(userRegistrationRequest);
+        UserDetailsResponse userDetailsResponse = new UserDetailsResponse(userEntity.getEmail(),
+                userEntity.getFirstName(), userEntity.getLastName(),
+                userEntity.getBirthDate());
 
         return ResponseEntity.ok(userDetailsResponse);
     }
@@ -43,13 +43,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<UserDetailsResponse> login(@RequestBody UserLoginRequest userLoginRequest,
                                                      HttpServletResponse response) {
-        User authenticatedUser = userService.login(userLoginRequest);
-        String jwtToken = jwtUtil.generateToken(authenticatedUser);
+        UserEntity authenticatedUserEntity = userService.login(userLoginRequest);
+        String jwtToken = jwtUtil.generateToken(authenticatedUserEntity);
 
         response.setHeader(ApiConstants.AUTHENTICATION_HEADER, jwtToken);
-        UserDetailsResponse userDetailsResponse = new UserDetailsResponse(authenticatedUser.getEmail(),
-                authenticatedUser.getFirstName(), authenticatedUser.getLastName(),
-                authenticatedUser.getBirthDate());
+        UserDetailsResponse userDetailsResponse = new UserDetailsResponse(authenticatedUserEntity.getEmail(),
+                authenticatedUserEntity.getFirstName(), authenticatedUserEntity.getLastName(),
+                authenticatedUserEntity.getBirthDate());
 
         return ResponseEntity.ok(userDetailsResponse);
     }
@@ -57,10 +57,10 @@ public class UserController {
     @GetMapping("/current")
     public ResponseEntity<UserDetailsResponse> authenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-        UserDetailsResponse userDetailsResponse = new UserDetailsResponse(currentUser.getEmail(),
-                currentUser.getFirstName(), currentUser.getLastName(),
-                currentUser.getBirthDate());
+        UserEntity currentUserEntity = (UserEntity) authentication.getPrincipal();
+        UserDetailsResponse userDetailsResponse = new UserDetailsResponse(currentUserEntity.getEmail(),
+                currentUserEntity.getFirstName(), currentUserEntity.getLastName(),
+                currentUserEntity.getBirthDate());
 
         return ResponseEntity.ok(userDetailsResponse);
     }

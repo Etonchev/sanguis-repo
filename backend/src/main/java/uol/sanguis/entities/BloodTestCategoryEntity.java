@@ -4,15 +4,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.util.UUID;
-
 @Table(name = "blood_test_categories")
 @Entity
-public class BloodTestCategory {
+public class BloodTestCategoryEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @UuidGenerator

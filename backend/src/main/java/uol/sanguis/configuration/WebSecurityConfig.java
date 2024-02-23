@@ -33,8 +33,8 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 // Authorization configuration
                 .authorizeHttpRequests((authorize) -> authorize
-                        // Permit login and register requests without authentication
-                        .requestMatchers("/users/login", "/users/register").permitAll()
+                        // Permit login, register and blood test categories APIs without authentication
+                        .requestMatchers("/users/login", "/users/register", "/blood-tests/categories").permitAll()
                         .anyRequest().authenticated()
                 )
                 // Do not create a session

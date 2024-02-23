@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Table(name = "users")
 @Entity
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
     @Id
     @Column(unique = true, nullable = false)
     private String email;
@@ -101,27 +101,27 @@ public class User implements UserDetails {
         this.birthDate = birthDate;
     }
 
-    public User withEmail(String email) {
+    public UserEntity withEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public User withPassword(String password) {
+    public UserEntity withPassword(String password) {
         this.password = password;
         return this;
     }
 
-    public User withFirstName(String firstName) {
+    public UserEntity withFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
 
-    public User withLastName(String lastName) {
+    public UserEntity withLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
 
-    public User withBirthDate(Date birthDate) {
+    public UserEntity withBirthDate(Date birthDate) {
         this.birthDate = birthDate;
         return this;
     }
