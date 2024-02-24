@@ -1,6 +1,5 @@
 package uol.sanguis.controllers;
 
-import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uol.sanguis.models.LabResult;
 import uol.sanguis.models.QueryResult;
+import uol.sanguis.models.requests.CreateLabResult;
 import uol.sanguis.services.LabResultService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class LabResultController {
     }
 
     @PostMapping("")
-    public void createLabResult(@RequestBody LabResult request) {
+    public void createLabResult(@RequestBody CreateLabResult request) {
         labResultService.createLabResult(request);
     }
 }

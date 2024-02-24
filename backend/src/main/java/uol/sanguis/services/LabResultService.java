@@ -6,6 +6,7 @@ import uol.sanguis.entities.BloodTestEntity;
 import uol.sanguis.entities.LabResultEntity;
 import uol.sanguis.models.BloodTest;
 import uol.sanguis.models.LabResult;
+import uol.sanguis.models.requests.CreateLabResult;
 import uol.sanguis.repositories.BloodTestCategoryRepository;
 import uol.sanguis.repositories.BloodTestRepository;
 import uol.sanguis.repositories.LabResultRepository;
@@ -62,7 +63,7 @@ public class LabResultService {
         return labResult;
     }
 
-    public void createLabResult(LabResult labResult) {
+    public void createLabResult(CreateLabResult labResult) {
         String userId = userService.getAuthenticatedUserId();
         LabResultEntity labResultEntity = new LabResultEntity();
 
