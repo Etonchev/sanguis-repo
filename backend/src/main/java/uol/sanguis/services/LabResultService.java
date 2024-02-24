@@ -66,6 +66,24 @@ public class LabResultService {
         return labResult;
     }
 
+    public void updateLabResult(String labResultId, CreateLabResult labResult) {
+        String userId = userService.getAuthenticatedUserId();
+        Optional<LabResultEntity> labResultOptional = labResultRepository.findByIdAndUserId(labResultId, userId);
+        if (labResultOptional.isEmpty()) {
+            throw new RuntimeException("Lab result with the provided id was not found!");
+        }
+
+        LabResultEntity labResultEntity = labResultOptional.get();
+        labResultEntity.setDate(labResult.getDate());
+        labResultEntity.setLaboratory(labResult.getLaboratory());
+        labResultEntity.setPhysician(labResult.getPhysician());
+        labResultEntity.setNote(labResult.getNote());
+
+        // TODO: Implement blood test update
+
+        labResultRepository.save(labResultEntity);
+    }
+
     public void createLabResult(CreateLabResult labResult) {
         String userId = userService.getAuthenticatedUserId();
         LabResultEntity labResultEntity = new LabResultEntity();
