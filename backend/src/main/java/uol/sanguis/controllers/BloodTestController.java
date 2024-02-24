@@ -2,12 +2,14 @@ package uol.sanguis.controllers;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uol.sanguis.models.BloodTest;
 import uol.sanguis.models.BloodTestCategory;
 import uol.sanguis.models.LabResult;
 import uol.sanguis.models.QueryResult;
+import uol.sanguis.models.responses.BloodTestDetailedResponse;
 import uol.sanguis.services.BloodTestCategoryService;
 import uol.sanguis.services.LabResultService;
 
@@ -28,20 +30,27 @@ public class BloodTestController {
         this.labResultService = labResultService;
     }
 
+    @GetMapping("")
+    public List<QueryResult<BloodTestDetailedResponse>> getBloodTests() {
+        List<BloodTestDetailedResponse> result = labResultService.getAllDetailedBloodTests();
+        QueryResult queryResult = new QueryResult<>(result, result.size(), 0, 20);
+
+        // Temporary fix
+        return Arrays.asList(queryResult);
+    }
+
+    @GetMapping("/{categoryId}")
+    public List<BloodTestDetailedResponse> getBloodTestsByCategory(@PathVariable String categoryId) {
+        List<BloodTestDetailedResponse> allBloodTests = labResultService.getAllDetailedBloodTests();
+        List<BloodTestDetailedResponse> bloodTestsFilteredByCategory = allBloodTests.stream()
+                .filter(b -> b.getCategoryId().equals(categoryId))
+                .toList();
+
+        return bloodTestsFilteredByCategory;
+    }
+
     @GetMapping("/categories")
     public List<BloodTestCategory> getBloodTestCategories() {
         return bloodTestCategoryService.getBloodTestCategories();
-    }
-
-    @GetMapping("")
-    public List<QueryResult<BloodTest>> getBloodTests() {
-        List<LabResult> labResults = labResultService.getLabResults();
-
-        List<BloodTest> result = new ArrayList<>();
-        labResults.forEach(l -> result.addAll(l.getTests()));
-
-        QueryResult queryResult = new QueryResult<>(result, result.size(), 0, 20);
-        // Temporary fix
-        return Arrays.asList(queryResult);
     }
 }

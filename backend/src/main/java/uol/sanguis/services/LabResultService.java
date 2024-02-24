@@ -7,6 +7,7 @@ import uol.sanguis.entities.LabResultEntity;
 import uol.sanguis.models.BloodTest;
 import uol.sanguis.models.LabResult;
 import uol.sanguis.models.requests.CreateLabResult;
+import uol.sanguis.models.responses.BloodTestDetailedResponse;
 import uol.sanguis.repositories.BloodTestCategoryRepository;
 import uol.sanguis.repositories.BloodTestRepository;
 import uol.sanguis.repositories.LabResultRepository;
@@ -121,5 +122,19 @@ public class LabResultService {
         LabResultEntity labResult = labResultOptional.get();
         bloodTestRepository.deleteAll(labResult.getBloodTests());
         labResultRepository.delete(labResult);
+    }
+
+    public List<BloodTestDetailedResponse> getAllDetailedBloodTests() {
+        List<LabResult> labResults = getLabResults();
+        List<BloodTestDetailedResponse> allBloodTests = new ArrayList<>();
+        for (LabResult labResult : labResults) {
+            for (BloodTest bloodTest : labResult.getTests()) {
+                BloodTestDetailedResponse bloodTestDetailedResponse = new BloodTestDetailedResponse(
+                        labResult.getDate(), labResult.getNote(), bloodTest.getCategoryId(), bloodTest.getValue());
+                allBloodTests.add(bloodTestDetailedResponse);
+            }
+        }
+
+        return allBloodTests;
     }
 }
