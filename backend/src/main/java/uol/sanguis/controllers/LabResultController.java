@@ -37,6 +37,12 @@ public class LabResultController {
         return Arrays.asList(queryResult);
     }
 
+    @PostMapping("")
+    public ResponseEntity<Void> createLabResult(@RequestBody CreateLabResult request) {
+        labResultService.createLabResult(request);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
     @GetMapping("/{labResultId}")
     public ResponseEntity<LabResult> getLabResult(@PathVariable String labResultId) {
         return ResponseEntity.ok(labResultService.getLabResult(labResultId));
@@ -47,12 +53,6 @@ public class LabResultController {
                                                 @RequestBody CreateLabResult labResult) {
         labResultService.updateLabResult(labResultId, labResult);
         return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @PostMapping("")
-    public ResponseEntity<Void> createLabResult(@RequestBody CreateLabResult request) {
-        labResultService.createLabResult(request);
-        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{labResultId}")
