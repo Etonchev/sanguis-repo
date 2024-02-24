@@ -1,10 +1,13 @@
 package uol.sanguis.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.List;
 
 public class LabResult {
     private final String id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private final Date date;
     private final String laboratory;
     private final String physician;
