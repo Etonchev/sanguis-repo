@@ -21,7 +21,7 @@ public class BloodTestEntity {
     @Column(nullable = false)
     private double value;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private BloodTestCategoryEntity bloodTestCategory;
 
     @ManyToOne(cascade = CascadeType.ALL)

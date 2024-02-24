@@ -19,13 +19,16 @@ import java.util.Optional;
 public class LabResultService {
     private final LabResultRepository labResultRepository;
     private final BloodTestCategoryRepository bloodTestCategoryRepository;
+    private final BloodTestRepository bloodTestRepository;
     private final UserService userService;
 
     public LabResultService(LabResultRepository labResultRepository,
                             BloodTestCategoryRepository bloodTestCategoryRepository,
-                            BloodTestRepository bloodTestRepository, UserService userService) {
+                            BloodTestRepository bloodTestRepository,
+                            UserService userService) {
         this.labResultRepository = labResultRepository;
         this.bloodTestCategoryRepository = bloodTestCategoryRepository;
+        this.bloodTestRepository = bloodTestRepository;
         this.userService = userService;
     }
 
@@ -88,5 +91,17 @@ public class LabResultService {
         labResultEntity.setBloodTests(bloodTestEntities);
 
         labResultRepository.save(labResultEntity);
+    }
+
+    public void deleteLabResult(String labResultId) {
+        String userId = userService.getAuthenticatedUserId();
+        Optional<LabResultEntity> labResultOptional = labResultRepository.findByIdAndUserId(labResultId, userId);
+        if (labResultOptional.isEmpty()) {
+            throw new RuntimeException("Lab result with the provided id was not found!");
+        }
+
+        LabResultEntity labResult = labResultOptional.get();
+        bloodTestRepository.deleteAll(labResult.getBloodTests());
+        labResultRepository.delete(labResult);
     }
 }
