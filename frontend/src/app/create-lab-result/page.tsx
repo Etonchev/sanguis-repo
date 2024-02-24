@@ -136,7 +136,7 @@ export default function CreateLabResult() {
 
     try {
       await addNewLabResult({
-        labResultDate,
+        date: labResultDate,
         laboratory,
         physician,
         note,

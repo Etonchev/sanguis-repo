@@ -44,7 +44,7 @@ export const fetchLabResult = async ({ token, id }: GetLabResultPayload) => {
 };
 
 export const addNewLabResult = async ({
-  labResultDate,
+  date,
   laboratory,
   physician,
   note,
@@ -60,7 +60,7 @@ export const addNewLabResult = async ({
         Accept: "application/vnd.sanguis.v1+json",
       },
       data: {
-        labResultDate,
+        date: date,
         laboratory,
         physician,
         note,
@@ -76,7 +76,7 @@ export const addNewLabResult = async ({
 };
 
 export const editLabResult = async ({
-  labResultDate,
+  date,
   laboratory,
   physician,
   note,
@@ -93,7 +93,7 @@ export const editLabResult = async ({
         Accept: "application/vnd.sanguis.v1+json",
       },
       data: {
-        labResultDate,
+        date: date,
         laboratory,
         physician,
         note,

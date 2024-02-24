@@ -180,7 +180,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
 
     try {
       await editLabResult({
-        labResultDate,
+        date: labResultDate,
         laboratory,
         physician,
         note,

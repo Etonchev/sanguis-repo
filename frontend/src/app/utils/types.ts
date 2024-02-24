@@ -54,7 +54,7 @@ export type BloodTestsCategory = {
 
 export interface AddNewLabResultPayload {
   token: string;
-  labResultDate: string;
+  date: string;
   laboratory: string;
   physician: string;
   note: string;
