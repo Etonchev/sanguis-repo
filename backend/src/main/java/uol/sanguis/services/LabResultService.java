@@ -13,6 +13,8 @@ import uol.sanguis.repositories.BloodTestRepository;
 import uol.sanguis.repositories.LabResultRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +49,9 @@ public class LabResultService {
             labResults.add(labResult);
         }
 
+        // Sort by Date in reverse order
+        labResults.sort(java.util.Comparator.comparing(LabResult::getDate).reversed());
+
         return labResults;
     }
 
@@ -80,7 +85,20 @@ public class LabResultService {
         labResultEntity.setPhysician(labResult.getPhysician());
         labResultEntity.setNote(labResult.getNote());
 
-        // TODO: Implement blood test update
+        List<BloodTest> bloodTests = labResult.getTests();
+        List<BloodTestEntity> bloodTestEntities = new ArrayList<>();
+        for (BloodTest bloodTest : bloodTests) {
+            BloodTestCategoryEntity bloodTestCategoryEntity =
+                    bloodTestCategoryRepository.findById(bloodTest.getCategoryId()).get();
+            BloodTestEntity bloodTestEntity = new BloodTestEntity(bloodTest.getValue(),
+                    bloodTestCategoryEntity, labResultEntity);
+            bloodTestEntities.add(bloodTestEntity);
+        }
+
+        List<String> ids = labResultEntity.getBloodTests().stream().map(b -> b.getId()).toList();
+        bloodTestRepository.deleteAllById(ids);
+        labResultEntity.getBloodTests().clear();
+        labResultEntity.setBloodTests(bloodTestEntities);
 
         labResultRepository.save(labResultEntity);
     }

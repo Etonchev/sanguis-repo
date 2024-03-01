@@ -35,7 +35,7 @@ public class LabResultEntity {
     @Column(nullable = false)
     private String userId;
 
-    @OneToMany(mappedBy="labResult", cascade= CascadeType.ALL)
+    @OneToMany(mappedBy="labResult", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<BloodTestEntity> bloodTests;
 
     public String getId() {
