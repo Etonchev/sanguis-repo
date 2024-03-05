@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import LoadingSkeleton from "../LoadingSkeleton/LoadingSkeleton";
 import { useRouter } from "next/navigation";
+import LogoImage from "@/../public/logo.png";
 
 const NavBar = () => {
   const { data: session, status } = useSession();
@@ -20,9 +21,12 @@ const NavBar = () => {
 
   return (
     <main className="bg-slate-800 shadow-xl w-full h-16 flex justify-between items-center px-12">
-      <Link href={"/"} className="text-2xl text-slate-50">
-        SANGUIS
-      </Link>
+      <div className="flex items-center">
+        <img src="/logo.png" alt="Sanguis logo" className="h-8 mr-2" />
+        <Link href={"/"} className="text-2xl text-slate-50">
+          SANGUIS
+        </Link>
+      </div>
       <div>
         {status === "loading" && <LoadingSkeleton />}
         {session && session.user && (
