@@ -55,7 +55,6 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
   const [bloodTestsTypes, setBloodTestsTypes] = useState<BloodTestsCategory[]>([]);
   const [dynamicFields, setDynamicFields] = useState([{ testType: "", testValue: "" }]);
   const [labResult, setLabResult] = useState<LabResultItem | null>(null);
-  const [selectTestTypes, setSelectTestTypes] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLabResultLoading, setIsLabResultLoading] = useState(false);
   const [editLabResultError, setEditLabResultError] = useState(false);
@@ -105,14 +104,13 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
       form.reset({
         date: labResult && new Date(labResult.date),
         laboratory: labResult && labResult.laboratory,
-        physician: labResult && labResult.physician || "",
-        note: labResult && labResult.note || "",
+        physician: (labResult && labResult.physician) || "",
+        note: (labResult && labResult.note) || "",
         testPairs,
       });
 
       const testTypes = testPairs.map((test: TestResult) => test && test.testType);
 
-      setSelectTestTypes([...selectTestTypes, ...testTypes]);
       setLabResult(labResult);
       setIsLabResultLoading(false);
     })();
@@ -137,7 +135,18 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
         }),
       ),
     })
-    .required();
+    .refine(
+      (data) => {
+        const testTypes = data.testPairs.map((pair) => pair.testType);
+        const uniqueTestTypes = new Set(testTypes);
+        return uniqueTestTypes.size === testTypes.length;
+      },
+      {
+        message:
+          "Each blood test type must be unique. Please ensure that each blood test type is selected only once.",
+        path: ["testPairs"],
+      },
+    );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -199,6 +208,9 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
   if ((!session && status === "loading") || isLoading || isLabResultLoading) {
     return <Loader />;
   }
+
+  const { errors } = form.formState;
+  const testPairsError = errors.testPairs?.message;
 
   return (
     <main className="flex flex-col items-center gap-16">
@@ -317,7 +329,6 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
                             <Select
                               onValueChange={(value) => {
                                 field.onChange(value);
-                                setSelectTestTypes([...selectTestTypes, value]);
                               }}
                             >
                               <SelectTrigger className="w-52">
@@ -329,11 +340,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
                                 <SelectGroup>
                                   <SelectLabel>Select Blood Test Type</SelectLabel>
                                   {bloodTestsTypes.map((test) => (
-                                    <SelectItem
-                                      disabled={selectTestTypes.includes(test.name)}
-                                      key={test.id}
-                                      value={test.name}
-                                    >
+                                    <SelectItem key={test.id} value={test.name}>
                                       {test.name}
                                     </SelectItem>
                                   ))}
@@ -372,6 +379,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
                   />
                 </div>
               ))}
+              {testPairsError && <div className="text-sm text-red-600">{testPairsError}</div>}
               <FormField
                 control={form.control}
                 name="note"
