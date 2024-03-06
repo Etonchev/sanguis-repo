@@ -1,22 +1,24 @@
-import { Data } from "@/app/all-tests/page";
 import React from "react";
 import { Chart } from "react-google-charts";
+import { format } from "date-fns";
 
 export const options = {
   title: "",
-  bezierCurve: false,
+  curveType: "function",
+  legend: { position: "bottom" },
 };
 
+interface DataPoint {
+  [date: string]: number;
+}
+
 interface LineChartProps {
-  data: Data[];
+  data: DataPoint[];
 }
 
 export const LineChart = ({ data }: LineChartProps) => {
-  const userData = data.map((entry) => {
-    const date = Object.keys(entry)[0].toString();
-    const value = entry[date];
-    return [date, value];
-  });
+  console.log(data);
+  const userData = data.map((entry) => [format(new Date(entry.date), "yyyy-MM-dd"), entry.value]);
 
   userData.unshift(["Date", "Value"]);
 
