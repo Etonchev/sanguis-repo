@@ -44,9 +44,6 @@ const LabResult = ({ params }: { params: { id: string } }) => {
   const [isLabResultLoading, setIsLabResultLoading] = useState(false);
   const [testCategories, setTestsCategories] = useState<BloodTestsCategory[] | undefined>([]);
   const [areTestsCategoriesLoading, setAreTestsCategoriesLoading] = useState(false);
-  const [labResultBloodTests, setLabResultBloodTests] = useState<LabResultBloodTests[] | undefined>(
-    [],
-  );
   const [areLabResultBloodTestsLoading, setAreLabResultBloodTestsLoading] = useState(false);
   const [labResultTestsInfo, setLabResultTestsInfo] = useState<LabResultTestInfo[]>([]);
   const { id } = params;
@@ -85,10 +82,6 @@ const LabResult = ({ params }: { params: { id: string } }) => {
     (async () => {
       if (!session) return;
       setAreLabResultBloodTestsLoading(true);
-
-      const labResultTests = await getLabResultBloodTests({ token: session.user.token, id });
-
-      setLabResultBloodTests(labResultTests);
       setAreLabResultBloodTestsLoading(false);
     })();
   }, [session, id]);
@@ -96,25 +89,19 @@ const LabResult = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     if (!session) return;
 
-    if (
-      !labResultBloodTests ||
-      !testCategories ||
-      !labResultBloodTests.length ||
-      !testCategories.length
-    )
-      return;
+    if (!testCategories || !testCategories.length) return;
 
-    const labResultTestsInfo: any = labResultBloodTests
-      .map((blootTest) => {
+    const labResultTestsInfo: any = labResult?.tests
+      .map((bloodTest) => {
         const matchingItem = testCategories.find(
-          (category) => blootTest.categoryId === category.id,
+          (category) => bloodTest.categoryId === category.id,
         );
 
         if (matchingItem) {
           return {
             lowerRange: matchingItem.lowerRange,
             upperRange: matchingItem.upperRange,
-            value: blootTest.value,
+            value: bloodTest.value,
             name: matchingItem.name,
             unit: matchingItem.unit,
           };
@@ -127,7 +114,7 @@ const LabResult = ({ params }: { params: { id: string } }) => {
     if (labResultTestsInfo && labResultTestsInfo.length) {
       setLabResultTestsInfo(labResultTestsInfo);
     }
-  }, [session, labResultBloodTests, testCategories]);
+  }, [session, testCategories, labResult]);
 
   const handleDeleteLabResult = async () => {
     if (!labResult || !session) return;
