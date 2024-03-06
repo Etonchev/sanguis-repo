@@ -89,29 +89,28 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
       setIsLabResultLoading(true);
 
       const labResult = await fetchLabResult({ token: session.user.token, id });
-      const testPairs =
-        labResult &&
-        labResult.tests.map((test: LabTest) => {
-          const currentTest = bloodTestsTypes.find((t) => {
-            return t.id === test.categoryId;
-          });
+      if (labResult) {
+        const testPairs = labResult.tests
+          .map((test: LabTest) => {
+            const currentTest = bloodTestsTypes.find((t) => t.id === test.categoryId);
+            return currentTest ? { testType: currentTest.name, testValue: test.value } : null;
+          })
+          .filter(Boolean); // Remove any null entries just in case
 
-          if (currentTest) {
-            return { testType: currentTest.name, testValue: test.value };
-          }
+        // Now, we update the dynamicFields state with these test pairs
+        setDynamicFields(testPairs);
+
+        form.reset({
+          date: new Date(labResult.date),
+          laboratory: labResult.laboratory,
+          physician: labResult.physician || "",
+          note: labResult.note || "",
+          // This ensures form fields are in sync with dynamicFields state
+          testPairs: testPairs,
         });
 
-      form.reset({
-        date: labResult && new Date(labResult.date),
-        laboratory: labResult && labResult.laboratory,
-        physician: (labResult && labResult.physician) || "",
-        note: (labResult && labResult.note) || "",
-        testPairs,
-      });
-
-      const testTypes = testPairs.map((test: TestResult) => test && test.testType);
-
-      setLabResult(labResult);
+        setLabResult(labResult);
+      }
       setIsLabResultLoading(false);
     })();
   }, [session, id, bloodTestsTypes]);
@@ -212,11 +211,13 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
   const { errors } = form.formState;
   const testPairsError = errors.testPairs?.message;
 
+  console.log(bloodTestsTypes);
+
   return (
     <main className="flex flex-col items-center gap-16">
       {!isLabResultLoading && !labResult && <div>There is no lab result with this id.</div>}
       <div className="flex gap-64 w-1/2">
-        <div className="flex flex-col items-center gap-16 w-[90%]">
+        <div className="flex flex-col items-center gap-16 w-full">
           <div className="text-4xl mt-24">Edit Lab Result</div>
           <Form {...form}>
             <form

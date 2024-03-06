@@ -171,7 +171,7 @@ export default function CreateLabResult() {
   return (
     <main className="flex flex-col items-center gap-16">
       <div className="flex gap-64 w-1/2">
-        <div className="flex flex-col items-center gap-16 w-[90%]">
+        <div className="flex flex-col items-center gap-16 w-full">
           <div className="text-4xl mt-24">Create New Lab Result</div>
           <Form {...form}>
             <form
