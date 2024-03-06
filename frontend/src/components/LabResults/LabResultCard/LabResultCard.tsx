@@ -22,9 +22,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import Loader from "@/components/Loader/Loader";
 
-const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
+const LabResultCard = ({
+  labResult,
+  fetchAndSetLabResults,
+}: {
+  labResult: LabResultItem;
+  fetchAndSetLabResults: () => void;
+}) => {
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -35,6 +40,7 @@ const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
   const handleDeleteLabResult = async (e: React.MouseEvent) => {
     e.stopPropagation();
     await deleteLabResult({ id: labResult.id, token: session.user.token });
+    await fetchAndSetLabResults();
   };
 
   const handleRedirectToLabResultPage = (e: React.MouseEvent) => {
@@ -59,7 +65,7 @@ const LabResultCard = ({ labResult }: { labResult: LabResultItem }) => {
       </CardHeader>
       <CardContent>
         <div>Notes:</div>
-        {labResult.note}
+        <div className="h-12 truncate">{labResult.note || "N/A"}</div>
       </CardContent>
       <CardFooter className="flex gap-2 justify-end">
         <Button onClick={handleRedirectToEditLabResultPage} variant="outline">

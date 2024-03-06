@@ -204,7 +204,7 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
     <main className="flex flex-col items-center gap-16">
       {!isLabResultLoading && !labResult && <div>There is no lab result with this id.</div>}
       <div className="flex gap-64 w-1/2">
-        <div className="flex flex-col items-center gap-16 w-[70%]">
+        <div className="flex flex-col items-center gap-16 w-[90%]">
           <div className="text-4xl mt-24">Edit Lab Result</div>
           <Form {...form}>
             <form

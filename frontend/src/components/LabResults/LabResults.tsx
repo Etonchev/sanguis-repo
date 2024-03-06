@@ -10,18 +10,21 @@ const LabResults = () => {
   const [labResults, setLabResults] = useState<LabResultItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const fetchAndSetLabResults = async () => {
+    if (!session || !session.user) return;
+    setIsLoading(true);
+    const fetchedLabResults = await fetchLabResults(session.user.token);
+
+    if (fetchedLabResults && fetchedLabResults.length > 0) {
+      setLabResults(fetchedLabResults[0].items);
+    } else {
+      setLabResults([]);
+    }
+
+    setIsLoading(false);
+  };
   useEffect(() => {
-    (async () => {
-      if (!session || !session.user) return;
-      setIsLoading(true);
-      const labResults = await fetchLabResults(session.user.token);
-
-      if (labResults && labResults.length > 0) {
-        setLabResults(labResults[0].items);
-      }
-
-      setIsLoading(false);
-    })();
+    fetchAndSetLabResults();
   }, [session]);
 
   return (
@@ -33,9 +36,9 @@ const LabResults = () => {
           <Skeleton className="h-8 w-full" />
         </div>
       )}
-      {labResults.length > 0 &&
+      {labResults.length && labResults.length > 0 &&
         labResults.map((labResult: LabResultItem) => {
-          return <LabResultCard key={labResult.id} labResult={labResult} />;
+          return <LabResultCard key={labResult.id} labResult={labResult} fetchAndSetLabResults={fetchAndSetLabResults}/>;
         })}
       {!labResults ||
         (labResults.length < 0 && !isLoading && (
