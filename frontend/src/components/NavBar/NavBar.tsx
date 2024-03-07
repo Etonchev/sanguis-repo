@@ -32,7 +32,7 @@ const NavBar = () => {
         {session && session.user && (
           <div className="flex gap-2">
             <Link href={"/all-tests"} className="text-lg font-semibold text-slate-50 self-center mr-8 mt-1 hover:cursor-pointer hover:text-green-500">
-              MY TESTS
+              MY BLOOD TEST GRAPHS
             </Link>
             <Avatar>
               <AvatarFallback>{`${session.user.firstName
