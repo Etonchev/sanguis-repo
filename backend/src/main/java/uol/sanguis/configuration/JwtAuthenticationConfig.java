@@ -62,6 +62,9 @@ public class JwtAuthenticationConfig extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
+        } catch (io.jsonwebtoken.security.SignatureException | io.jsonwebtoken.MalformedJwtException |
+                 io.jsonwebtoken.ExpiredJwtException | io.jsonwebtoken.UnsupportedJwtException ex) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
         } catch (Exception exception) {
             handlerExceptionResolver.resolveException(request, response, null, exception);
         }

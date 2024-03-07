@@ -18,11 +18,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationConfig jwtAuthenticationConfig;
+    private final AuthEntryPoint authEntryPoint;
 
     public WebSecurityConfig(JwtAuthenticationConfig jwtAuthenticationConfig,
-                             AuthenticationProvider authenticationProvider) {
+                             AuthenticationProvider authenticationProvider,
+                             AuthEntryPoint authEntryPoint) {
         this.authenticationProvider = authenticationProvider;
         this.jwtAuthenticationConfig = jwtAuthenticationConfig;
+        this.authEntryPoint = authEntryPoint;
     }
 
     @Bean
@@ -37,6 +40,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/users/login", "/users/register", "/blood-tests/categories").permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 // Do not create a session
                 .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS))
