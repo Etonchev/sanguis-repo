@@ -1,10 +1,20 @@
 package uol.sanguis.models.requests;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class UserLoginRequest {
     private String email;
     private String password;
+
+    @JsonCreator
+    public UserLoginRequest(@JsonProperty("email") String email,
+                            @JsonProperty("password") String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     public String getEmail() {
         return email;

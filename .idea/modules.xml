@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/sanguis-repo.iml" filepath="$PROJECT_DIR$/.idea/sanguis-repo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sanguis.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sanguis.main.iml" />
     </modules>
   </component>
 </project>

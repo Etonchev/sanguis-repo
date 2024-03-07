@@ -1,5 +1,8 @@
 package uol.sanguis.models.requests;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -10,7 +13,12 @@ public class UserRegistrationRequest {
     private String lastName;
     private Date birthDate;
 
-    public UserRegistrationRequest(String email, String password, String firstName, String lastName, Date birthDate) {
+    @JsonCreator
+    public UserRegistrationRequest(@JsonProperty("email") String email,
+                                   @JsonProperty("password") String password,
+                                   @JsonProperty("firstName") String firstName,
+                                   @JsonProperty("lastName") String lastName,
+                                   @JsonProperty("birthDate") Date birthDate) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;

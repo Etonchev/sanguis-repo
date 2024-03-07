@@ -33,7 +33,7 @@ public class LabResultController {
     public List<QueryResult<LabResult>> getLabResults() {
         List<LabResult> result = labResultService.getLabResults();
         QueryResult queryResult = new QueryResult<>(result, result.size(), 0, 20);
-        // Temporary fix
+
         return Arrays.asList(queryResult);
     }
 
@@ -44,19 +44,19 @@ public class LabResultController {
     }
 
     @GetMapping("/{labResultId}")
-    public ResponseEntity<LabResult> getLabResult(@PathVariable String labResultId) {
+    public ResponseEntity<LabResult> getLabResult(@PathVariable("labResultId") String labResultId) {
         return ResponseEntity.ok(labResultService.getLabResult(labResultId));
     }
 
     @PatchMapping("/{labResultId}")
-    public ResponseEntity<Void> updateLabResult(@PathVariable String labResultId,
+    public ResponseEntity<Void> updateLabResult(@PathVariable("labResultId") String labResultId,
                                                 @RequestBody CreateLabResult labResult) {
         labResultService.updateLabResult(labResultId, labResult);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/{labResultId}")
-    public ResponseEntity<Void> deleteLabResult(@PathVariable String labResultId) {
+    public ResponseEntity<Void> deleteLabResult(@PathVariable("labResultId") String labResultId) {
         labResultService.deleteLabResult(labResultId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

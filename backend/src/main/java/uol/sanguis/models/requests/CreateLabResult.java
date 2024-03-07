@@ -1,6 +1,8 @@
 package uol.sanguis.models.requests;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import uol.sanguis.models.BloodTest;
 
 import java.util.Date;
@@ -14,8 +16,12 @@ public class CreateLabResult {
     private final String note;
     private final List<BloodTest> tests;
 
-    public CreateLabResult(Date date, String laboratory, String physician, String note,
-                           List<BloodTest> tests) {
+    @JsonCreator
+    public CreateLabResult(@JsonProperty("date") Date date,
+                           @JsonProperty("laboratory") String laboratory,
+                           @JsonProperty("physician") String physician,
+                           @JsonProperty("note") String note,
+                           @JsonProperty("tests") List<BloodTest> tests) {
         this.date = date;
         this.laboratory = laboratory;
         this.physician = physician;

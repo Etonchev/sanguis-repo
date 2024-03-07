@@ -35,12 +35,11 @@ public class BloodTestController {
         List<BloodTestDetailedResponse> result = labResultService.getAllDetailedBloodTests();
         QueryResult queryResult = new QueryResult<>(result, result.size(), 0, 20);
 
-        // Temporary fix
         return Arrays.asList(queryResult);
     }
 
     @GetMapping("/{categoryId}")
-    public List<BloodTestDetailedResponse> getBloodTestsByCategory(@PathVariable String categoryId) {
+    public List<BloodTestDetailedResponse> getBloodTestsByCategory(@PathVariable("categoryId") String categoryId) {
         List<BloodTestDetailedResponse> allBloodTests = labResultService.getAllDetailedBloodTests();
         List<BloodTestDetailedResponse> bloodTestsFilteredByCategory = allBloodTests.stream()
                 .filter(b -> b.getCategoryId().equals(categoryId))
