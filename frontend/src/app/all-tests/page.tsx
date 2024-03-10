@@ -143,7 +143,7 @@ const LabResult = ({ params }: { params: { id: string } }) => {
                     <div className="flex flex-col w-1/2">
                       <div className="self-end text-xl font-bold text-blue-950">
                         Your latest result:
-                        <span className="text-green-600 font-semibold">{` ${testInfo.data[0].value} ${testInfo.unit}`}</span>
+                        <span className="font-semibold">{` ${testInfo.data[testInfo.data.length - 1].value} ${testInfo.unit}`}</span>
                       </div>
                       <TestValuesLegend
                         lowerRange={testInfo.lowerRange}
