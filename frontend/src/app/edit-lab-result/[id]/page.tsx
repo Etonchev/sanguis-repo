@@ -411,8 +411,9 @@ export default function EditLabResult({ params }: { params: { id: string } }) {
               bloodTestsTypes.map((testType) => (
                 <AccordionItem key={testType.id} value="item-1">
                   <AccordionTrigger>{testType.name}</AccordionTrigger>
-                  <AccordionContent>{testType.description}</AccordionContent>
-                  <AccordionContent>{testType.aliases}</AccordionContent>
+                  <AccordionContent><span className="italic">Description: </span>{testType.description}</AccordionContent>
+                  <AccordionContent><span className="italic">Aliases: </span>{testType.aliases}</AccordionContent>
+                  <AccordionContent><span className="italic">Units: </span>{testType.unit}</AccordionContent>
                 </AccordionItem>
               ))}
           </Accordion>
